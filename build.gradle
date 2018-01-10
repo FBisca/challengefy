@@ -6,6 +6,7 @@ buildscript {
         dagger_version = "2.14.1"
         espresso_version = "3.0.1"
         retrofit_version = "2.3.0"
+        playServices_version = "11.8.0"
     }
 
     repositories {
