@@ -11,12 +11,12 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".estimate.activity.EstimateActivity"
+            android:name=".home.activity.SplashActivity"
             android:screenOrientation="portrait" />
 
         <activity-alias
             android:name=".Launcher"
-            android:targetActivity=".estimate.activity.EstimateActivity">
+            android:targetActivity=".home.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
