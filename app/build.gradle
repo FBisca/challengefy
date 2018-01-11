@@ -12,6 +12,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -30,11 +32,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support:cardview-v7:$support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
     implementation ("com.google.android.gms:play-services-maps:$playServices_version") {
         exclude group: 'com.android.support', module: 'support-media-compat'
         exclude group: 'com.android.support', module: 'support-v4'
     }
+
+    // Utils
+    implementation "com.airbnb.android:lottie:2.5.0-beta2"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$dagger_version"

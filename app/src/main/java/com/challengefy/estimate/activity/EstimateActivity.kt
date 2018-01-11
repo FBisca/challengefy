@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
+import com.challengefy.estimate.fragment.DestinationFragment
 import com.challengefy.map.fragment.MapFragment
+import com.google.android.gms.maps.GoogleMapOptions
 
 class EstimateActivity : BaseActivity() {
 
@@ -19,6 +21,10 @@ class EstimateActivity : BaseActivity() {
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.estimate_container_map, MapFragment.newInstance())
+                .commit()
+
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.estimate_container_content, DestinationFragment.newInstance())
                 .commit()
     }
 }
