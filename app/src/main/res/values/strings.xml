@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Challengefy</string>
+  <string name="estimate_finding_your_location">Finding your location</string>
 </resources>

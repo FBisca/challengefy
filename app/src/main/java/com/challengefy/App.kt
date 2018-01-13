@@ -2,9 +2,11 @@ package com.challengefy
 
 import android.app.Activity
 import android.app.Application
+import android.os.Build
 import com.challengefy.base.di.component.DaggerApplicationComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import timber.log.Timber
 import javax.inject.Inject
 
 class App : Application(), HasActivityInjector {
@@ -16,6 +18,13 @@ class App : Application(), HasActivityInjector {
         super.onCreate()
 
         initializeDagger()
+        initializeLogger()
+    }
+
+    private fun initializeLogger() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     private fun initializeDagger() {

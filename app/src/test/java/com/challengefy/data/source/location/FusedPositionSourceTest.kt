@@ -24,6 +24,23 @@ import org.powermock.modules.junit4.PowerMockRunner
 class FusedPositionSourceTest {
 
     @Test
+    fun testUpdatesStopWhenDispose() {
+        val request = LocationRequest()
+        val location = mock(Location::class.java)
+
+        robot {
+            withPermission(PERMISSION_GRANTED)
+            withLastLocation(false, null)
+            withLocationUpdates(listOf(location))
+            doTest {
+                val test = positionUpdates(request).take(1).test()
+                test.assertNoErrors()
+                verifyUpdatesStopped()
+            }
+        }
+    }
+
+    @Test
     fun testLocationUpdateWithoutLastLocation() {
         val request = LocationRequest()
         val location = mock(Location::class.java)
@@ -70,23 +87,6 @@ class FusedPositionSourceTest {
             doTest {
                 val test = positionUpdates(request).test()
                 test.assertValueCount(1)
-            }
-        }
-    }
-
-    @Test
-    fun testLocationUpdateWithLastLocationFailedTest() {
-        val request = LocationRequest()
-        val location = mock(Location::class.java)
-
-        robot {
-            withPermission(PERMISSION_GRANTED)
-            withLastLocation(false, null)
-            withLocationUpdates(listOf(location))
-            doTest {
-                val test = positionUpdates(request).take(1).test()
-                test.assertNoErrors()
-                verifyUpdatesStopped()
             }
         }
     }

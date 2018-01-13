@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <android.support.v7.widget.AppCompatImageView
+      android:id="@+id/estimate_img_find_location"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      app:tint="@color/colorAccent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:srcCompat="@drawable/ic_near_me_black_24dp"/>
+
+  <TextView
+      android:id="@+id/estimate_txt_where"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      android:text="Where to?"
+      android:textAppearance="@style/TextAppearance.AppCompat.Title"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/estimate_img_find_location"/>
+
+  <com.airbnb.lottie.LottieAnimationView
+      android:id="@+id/estimate_lottie_find_location"
+      android:layout_width="72dp"
+      android:layout_height="72dp"
+      android:visibility="gone"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"/>
+
+  <TextView
+      android:id="@+id/estimate_txt_find_location"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/estimate_lottie_find_location"/>
+
+</android.support.constraint.ConstraintLayout>
