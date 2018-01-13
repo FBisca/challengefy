@@ -12,7 +12,4 @@ class FusedPositionSource(private val context: Context) : PositionSource {
         return Flowable.create(FusedLocationOnSubscribe(context, locationRequest), BackpressureStrategy.LATEST)
                 .map { Position(it.latitude, it.longitude) }
     }
-
-
-
 }
