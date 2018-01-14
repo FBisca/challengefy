@@ -21,7 +21,7 @@
         android:screenOrientation="portrait"/>
 
     <activity
-        android:name=".destination.activity.AddressSearchActivity"
+        android:name=".address.activity.AddressSearchActivity"
         android:theme="@style/AppTheme.Translucent"/>
 
     <activity-alias

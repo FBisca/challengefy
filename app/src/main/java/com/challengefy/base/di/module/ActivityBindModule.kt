@@ -1,8 +1,8 @@
 package com.challengefy.base.di.module
 
 import com.challengefy.base.di.scope.ActivityScope
-import com.challengefy.destination.activity.AddressSearchActivity
-import com.challengefy.destination.module.DestinationModule
+import com.challengefy.address.activity.AddressSearchActivity
+import com.challengefy.address.module.AddressSearchModule
 import com.challengefy.estimate.activity.HomeActivity
 import com.challengefy.estimate.module.EstimateModule
 import com.challengefy.home.activity.SplashActivity
@@ -21,6 +21,6 @@ abstract class ActivityBindModule {
     abstract fun injectorEstimateActivity(): HomeActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [DestinationModule::class])
+    @ContributesAndroidInjector(modules = [AddressSearchModule::class])
     abstract fun injectorDestinationActivity(): AddressSearchActivity
 }

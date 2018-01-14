@@ -19,7 +19,7 @@ import android.view.ViewGroup
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
-import com.challengefy.destination.activity.AddressSearchActivity
+import com.challengefy.address.activity.AddressSearchActivity
 import com.challengefy.estimate.fragment.DestinationFragment
 import com.challengefy.estimate.fragment.EstimateFragment
 import com.challengefy.estimate.viewmodel.HomeViewModel

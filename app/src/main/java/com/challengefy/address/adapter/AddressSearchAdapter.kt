@@ -1,4 +1,4 @@
-package com.challengefy.destination.adapter
+package com.challengefy.address.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.challengefy.data.model.PredictionAddress
 import com.challengefy.databinding.ItemAddressBinding
 
-class DestinationAdapter : RecyclerView.Adapter<DestinationAdapter.ViewHolder>() {
+class AddressSearchAdapter : RecyclerView.Adapter<AddressSearchAdapter.ViewHolder>() {
 
     private val items = mutableListOf<PredictionAddress>()
     private var listener: (PredictionAddress) -> Unit = {}
