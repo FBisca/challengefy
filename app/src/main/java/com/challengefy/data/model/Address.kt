@@ -5,3 +5,9 @@ data class Address(
         val description: String,
         val position: Position
 )
+
+data class PredictionAddress(
+        val placeId: String,
+        val title: String,
+        val description: String
+)
