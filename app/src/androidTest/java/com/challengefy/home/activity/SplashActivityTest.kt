@@ -6,7 +6,7 @@ import android.support.test.espresso.intent.Intents.intended
 import android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.challengefy.estimate.activity.EstimateActivity
+import com.challengefy.estimate.activity.HomeActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +23,7 @@ class SplashActivityTest {
         Intents.init()
 
         rule.launchActivity(Intent())
-        intended(hasComponent(EstimateActivity::class.java.name))
+        intended(hasComponent(HomeActivity::class.java.name))
 
         Intents.release()
     }

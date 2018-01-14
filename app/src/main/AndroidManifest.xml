@@ -17,7 +17,7 @@
         android:screenOrientation="portrait"/>
 
     <activity
-        android:name=".estimate.activity.EstimateActivity"
+        android:name=".estimate.activity.HomeActivity"
         android:screenOrientation="portrait"/>
 
     <activity

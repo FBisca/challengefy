@@ -2,7 +2,7 @@ package com.challengefy
 
 import android.content.Context
 import com.challengefy.base.di.scope.ActivityScope
-import com.challengefy.estimate.activity.EstimateActivity
+import com.challengefy.estimate.activity.HomeActivity
 import javax.inject.Inject
 
 @ActivityScope
@@ -11,6 +11,6 @@ class Navigator @Inject constructor(
 ) {
 
     fun goToEstimateScreen() {
-        context.startActivity(EstimateActivity.startIntent(context))
+        context.startActivity(HomeActivity.startIntent(context))
     }
 }

@@ -1,45 +1,56 @@
 package com.challengefy.map.fragment
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import com.challengefy.R
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 
 class MapFragment : SupportMapFragment() {
 
     companion object {
-        private const val EXTRA_MAP_OPTIONS = "MapOptions"
         private const val DEFAULT_ZOOM = 18f
 
         fun newInstance() = MapFragment()
-
-        fun newInstance(options: GoogleMapOptions) = MapFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable(EXTRA_MAP_OPTIONS, options)
-            }
-        }
     }
+
+    private var mapState = MapState.IDLE
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getMapAsync {
+            val style = MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
+            it.setMapStyle(style)
             it.uiSettings.setAllGesturesEnabled(true)
-        }
-    }
-
-    fun activateMyLocation() {
-        context?.let {
-            if (ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            }
+            it.uiSettings.isZoomControlsEnabled = true
+            it.uiSettings.isCompassEnabled = false
         }
     }
 
     fun centerMap(latitude: Double, longitude: Double) {
-        getMapAsync { it.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM)) }
+        getMapAsync {
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM)
+
+            if (mapState == MapState.IDLE) {
+                it.moveCamera(cameraUpdate)
+                mapState = MapState.CENTERED
+            } else {
+                it.animateCamera(cameraUpdate)
+            }
+        }
+    }
+
+    private enum class MapState {
+        IDLE, CENTERED
+    }
+
+    @SuppressLint("MissingPermission")
+    fun enableCurrentLocation() {
+        getMapAsync {
+            it.isMyLocationEnabled = true
+            it.uiSettings.isMyLocationButtonEnabled = false
+        }
     }
 }
