@@ -22,4 +22,8 @@ class PlaceRepositoryImpl @Inject constructor(
     override fun detailPrediction(predictionAddress: PredictionAddress): Single<Address> {
         return placeSource.detailPrediction(predictionAddress)
     }
+
+    override fun getCurrentPlace(): Single<Address> {
+        return placeSource.getCurrentPlace()
+    }
 }

@@ -13,4 +13,5 @@ interface PlaceRepository {
     ): Single<List<PredictionAddress>>
 
     fun detailPrediction(predictionAddress: PredictionAddress): Single<Address>
+    fun getCurrentPlace(): Single<Address>
 }

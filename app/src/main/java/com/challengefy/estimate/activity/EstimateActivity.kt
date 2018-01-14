@@ -2,6 +2,7 @@ package com.challengefy.estimate.activity
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_DENIED
@@ -17,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
+import com.challengefy.data.model.Address
 import com.challengefy.destination.activity.DestinationActivity
 import com.challengefy.estimate.fragment.AddressesFragment
 import com.challengefy.estimate.viewmodel.EstimateViewModel
@@ -30,6 +32,7 @@ class EstimateActivity : BaseActivity() {
 
     companion object {
         private const val REQUEST_CODE_PERMISSION = 1
+        private const val REQUEST_CODE_DESTINATION = 2
 
         fun startIntent(context: Context) = Intent(context, EstimateActivity::class.java)
     }
@@ -43,7 +46,9 @@ class EstimateActivity : BaseActivity() {
     private val ctnRoot by lazy { findViewById<ViewGroup>(R.id.estimate_ctn_root) }
 
     private val mapFragment = MapFragment.newInstance()
-    private val destinationFragment = AddressesFragment.newInstance()
+    private val addressesFragment = AddressesFragment.newInstance()
+
+    private var address: Address? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +74,17 @@ class EstimateActivity : BaseActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DESTINATION) {
+            val address = data?.getParcelableExtra<Address>(DestinationActivity.RESULT_ADDRESS)
+            this.address = address
+            address?.let {
+                addressesFragment.showDestination(address)
+            }
+        }
+    }
+
     private fun showLocationPermissionDenied() {
         TransitionManager.beginDelayedTransition(ctnRoot)
         ctnLocationDenied.visibility = View.VISIBLE
@@ -82,7 +98,7 @@ class EstimateActivity : BaseActivity() {
 
     private fun initDestinationFragment() {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.estimate_container_content, destinationFragment)
+                .replace(R.id.estimate_container_content, addressesFragment)
                 .commit()
     }
 
@@ -96,6 +112,15 @@ class EstimateActivity : BaseActivity() {
 
     private fun initLocation() {
         mapFragment.activateMyLocation()
+        viewModel.currentLocation()
+                .subscribe(
+                        {
+                            addressesFragment.showPickup(it)
+                        },
+                        {
+
+                        }
+                )
         viewModel.location()
                 .subscribe(
                         {
@@ -115,6 +140,6 @@ class EstimateActivity : BaseActivity() {
     @SuppressLint("RestrictedApi")
     fun goToDestination(cardDestination: CardView) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, Pair.create(cardDestination, "name"))
-        startActivityForResult(DestinationActivity.startIntent(this), 0, options.toBundle())
+        startActivityForResult(DestinationActivity.startIntent(this, address), REQUEST_CODE_DESTINATION, options.toBundle())
     }
 }

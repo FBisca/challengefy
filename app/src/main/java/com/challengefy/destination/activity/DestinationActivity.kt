@@ -26,12 +26,16 @@ import javax.inject.Inject
 
 class DestinationActivity : BaseActivity() {
 
+    companion object {
+        private const val EXTRA_ADDRESS = "EXTRA_ADDRESS"
+        const val RESULT_ADDRESS = "RESULT_ADDRESS"
+
+        fun startIntent(context: Context, address: Address?) = Intent(context, DestinationActivity::class.java)
+                .putExtra(EXTRA_ADDRESS, address)
+    }
+
     @Inject
     lateinit var viewModel: DestinationViewModel
-
-    companion object {
-        fun startIntent(context: Context) = Intent(context, DestinationActivity::class.java)
-    }
 
     private val ctnRoot by bind<ViewGroup>(R.id.destination_ctn_root)
     private val listDestination by bind<RecyclerView>(R.id.destination_list)
@@ -44,9 +48,18 @@ class DestinationActivity : BaseActivity() {
         initViews()
     }
 
+    override fun onBackPressed() {
+        supportFinishAfterTransition()
+    }
+
     private fun initViews() {
         listDestination.layoutManager = LinearLayoutManager(this)
         listDestination.adapter = adapter
+        val address = getInitialAddress()
+        if (address != null) {
+            inputAddress.setText(address.title)
+            inputAddress.setSelection(address.title.length)
+        }
 
         bindTextChangeEvents()
         bindAddressPredictions()
@@ -72,7 +85,7 @@ class DestinationActivity : BaseActivity() {
     }
 
     private fun finishWithResult(address: Address) {
-        setResult(RESULT_OK, Intent())
+        setResult(RESULT_OK, Intent().putExtra(RESULT_ADDRESS, address))
         supportFinishAfterTransition()
     }
 
@@ -115,8 +128,8 @@ class DestinationActivity : BaseActivity() {
                 }
     }
 
-    override fun onBackPressed() {
-        supportFinishAfterTransition()
+    private fun getInitialAddress(): Address? {
+        return intent.getParcelableExtra(EXTRA_ADDRESS)
     }
 
 }

@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.challengefy.R
+import com.challengefy.data.model.Address
+import com.challengefy.databinding.FragmentAddressesBinding
 import com.challengefy.estimate.activity.EstimateActivity
 import com.challengefy.util.bind
 
@@ -14,13 +16,16 @@ class AddressesFragment : Fragment() {
 
     private val cardDestination by bind<CardView>(R.id.estimate_card_destination)
 
+    private lateinit var binding: FragmentAddressesBinding
+
     companion object {
         fun newInstance() = AddressesFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_addresses, container, false)
+        binding = FragmentAddressesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,5 +34,13 @@ class AddressesFragment : Fragment() {
         cardDestination.setOnClickListener {
             (activity as EstimateActivity).goToDestination(cardDestination)
         }
+    }
+
+    fun showDestination(address: Address) {
+        binding.destination = address
+    }
+
+    fun showPickup(address: Address) {
+        binding.pickup = address
     }
 }

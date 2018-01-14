@@ -1,12 +1,13 @@
 package com.challengefy.data.source.place
 
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.support.v4.content.ContextCompat
 import com.challengefy.data.model.Address
 import com.challengefy.data.model.Position
 import com.challengefy.data.model.PredictionAddress
-import com.google.android.gms.location.places.AutocompletePredictionBufferResponse
-import com.google.android.gms.location.places.PlaceBufferResponse
-import com.google.android.gms.location.places.Places
+import com.google.android.gms.location.places.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import io.reactivex.Single
@@ -44,10 +45,38 @@ class GooglePlaceSource @Inject constructor(
                 if (it.isSuccessful) {
                     emitter.onSuccess(parsePlaceResult(predictionAddress, it.result))
                 } else {
-                    emitter.onError(it.exception ?: IllegalArgumentException("Failed to get predictions"))
+                    emitter.onError(it.exception ?: IllegalArgumentException("Failed to detail prediction"))
                 }
             }
         }
+    }
+
+    override fun getCurrentPlace(): Single<Address> {
+        return Single.create { emitter ->
+            if (ContextCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+                emitter.onError(IllegalArgumentException("Permission Required"))
+            } else {
+                val client = Places.getPlaceDetectionClient(context, null)
+                client.getCurrentPlace(null).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        emitter.onSuccess(parseCurrentPlace(it.result))
+                    } else {
+                        emitter.onError(it.exception ?: IllegalArgumentException("Failed to get current place"))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun parseCurrentPlace(result: PlaceLikelihoodBufferResponse): Address {
+        val place = result.sortedByDescending { it.likelihood }
+                .first()
+                .place
+        return Address(
+                place.name.toString(),
+                place.address.toString(),
+                Position(place.latLng.latitude, place.latLng.longitude, false)
+        )
     }
 
     private fun parsePlaceResult(predictionAddress: PredictionAddress, result: PlaceBufferResponse): Address {
