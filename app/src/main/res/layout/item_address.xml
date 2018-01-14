@@ -6,12 +6,15 @@
   <data>
     <variable
         name="address"
-        type="com.challengefy.data.model.Address"/>
+        type="com.challengefy.data.model.PredictionAddress"/>
   </data>
 
   <android.support.constraint.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
+      android:clickable="true"
+      android:focusable="true"
+      android:background="?selectableItemBackground"
       android:padding="8dp">
 
     <TextView

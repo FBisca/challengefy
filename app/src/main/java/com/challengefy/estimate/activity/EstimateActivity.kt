@@ -1,6 +1,7 @@
 package com.challengefy.estimate.activity
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_DENIED
@@ -68,10 +69,6 @@ class EstimateActivity : BaseActivity() {
         }
     }
 
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
-        super.onActivityReenter(resultCode, data)
-    }
-
     private fun showLocationPermissionDenied() {
         TransitionManager.beginDelayedTransition(ctnRoot)
         ctnLocationDenied.visibility = View.VISIBLE
@@ -115,6 +112,7 @@ class EstimateActivity : BaseActivity() {
         disposables.add(this)
     }
 
+    @SuppressLint("RestrictedApi")
     fun goToDestination(cardDestination: CardView) {
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, Pair.create(cardDestination, "name"))
         startActivityForResult(DestinationActivity.startIntent(this), 0, options.toBundle())
