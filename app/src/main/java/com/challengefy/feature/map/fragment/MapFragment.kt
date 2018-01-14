@@ -1,4 +1,4 @@
-package com.challengefy.map.fragment
+package com.challengefy.feature.map.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context

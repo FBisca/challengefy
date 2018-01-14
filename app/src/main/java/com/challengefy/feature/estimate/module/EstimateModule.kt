@@ -1,4 +1,4 @@
-package com.challengefy.estimate.module
+package com.challengefy.feature.estimate.module
 
 import com.challengefy.base.di.scope.ActivityScope
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.challengefy.home.activity
+package com.challengefy.feature.home.activity
 
 import android.os.Bundle
 import com.challengefy.Navigator

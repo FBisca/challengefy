@@ -1,4 +1,4 @@
-package com.challengefy.address.activity
+package com.challengefy.feature.address.activity
 
 import android.content.Context
 import android.content.Intent
@@ -12,8 +12,8 @@ import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
 import com.challengefy.data.model.PredictionAddress
 import com.challengefy.databinding.ActivityAddressSearchBinding
-import com.challengefy.address.adapter.AddressSearchAdapter
-import com.challengefy.address.viewmodel.AddressSearchViewModel
+import com.challengefy.feature.address.adapter.AddressSearchAdapter
+import com.challengefy.feature.address.viewmodel.AddressSearchViewModel
 import com.jakewharton.rxbinding2.widget.textChangeEvents
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

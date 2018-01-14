@@ -13,20 +13,20 @@
       android:theme="@style/AppTheme">
 
     <activity
-        android:name=".home.activity.SplashActivity"
+        android:name="com.challengefy.feature.home.activity.SplashActivity"
         android:screenOrientation="portrait"/>
 
     <activity
-        android:name=".estimate.activity.HomeActivity"
+        android:name="com.challengefy.feature.estimate.activity.HomeActivity"
         android:screenOrientation="portrait"/>
 
     <activity
-        android:name=".address.activity.AddressSearchActivity"
+        android:name="com.challengefy.feature.address.activity.AddressSearchActivity"
         android:theme="@style/AppTheme.Translucent"/>
 
     <activity-alias
         android:name=".Launcher"
-        android:targetActivity=".home.activity.SplashActivity">
+        android:targetActivity="com.challengefy.feature.home.activity.SplashActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

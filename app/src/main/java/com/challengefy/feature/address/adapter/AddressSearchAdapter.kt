@@ -1,4 +1,4 @@
-package com.challengefy.address.adapter
+package com.challengefy.feature.address.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

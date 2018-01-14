@@ -2,7 +2,7 @@ package com.challengefy
 
 import android.content.Context
 import com.challengefy.base.di.scope.ActivityScope
-import com.challengefy.estimate.activity.HomeActivity
+import com.challengefy.feature.estimate.activity.HomeActivity
 import javax.inject.Inject
 
 @ActivityScope

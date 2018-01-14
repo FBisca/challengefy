@@ -1,4 +1,4 @@
-package com.challengefy.address.viewmodel
+package com.challengefy.feature.address.viewmodel
 
 import com.challengefy.base.di.scope.ActivityScope
 import com.challengefy.data.model.Address

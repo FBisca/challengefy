@@ -1,11 +1,11 @@
 package com.challengefy.base.di.module
 
 import com.challengefy.base.di.scope.ActivityScope
-import com.challengefy.address.activity.AddressSearchActivity
-import com.challengefy.address.module.AddressSearchModule
-import com.challengefy.estimate.activity.HomeActivity
-import com.challengefy.estimate.module.EstimateModule
-import com.challengefy.home.activity.SplashActivity
+import com.challengefy.feature.address.activity.AddressSearchActivity
+import com.challengefy.feature.address.module.AddressSearchModule
+import com.challengefy.feature.estimate.activity.HomeActivity
+import com.challengefy.feature.estimate.module.EstimateModule
+import com.challengefy.feature.home.activity.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

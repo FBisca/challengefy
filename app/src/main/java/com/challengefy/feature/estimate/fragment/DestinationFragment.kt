@@ -1,4 +1,4 @@
-package com.challengefy.estimate.fragment
+package com.challengefy.feature.estimate.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.challengefy.data.model.Address
 import com.challengefy.databinding.FragmentDestinationBinding
-import com.challengefy.estimate.activity.HomeActivity
+import com.challengefy.feature.estimate.activity.HomeActivity
 
 class DestinationFragment : Fragment() {
 

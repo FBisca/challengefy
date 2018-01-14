@@ -1,4 +1,4 @@
-package com.challengefy.estimate.viewmodel
+package com.challengefy.feature.estimate.viewmodel
 
 import com.challengefy.data.repository.PlaceRepository
 import com.challengefy.data.repository.PositionRepository

@@ -1,4 +1,4 @@
-package com.challengefy.estimate.activity
+package com.challengefy.feature.estimate.activity
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
@@ -19,11 +19,11 @@ import android.view.ViewGroup
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
-import com.challengefy.address.activity.AddressSearchActivity
-import com.challengefy.estimate.fragment.DestinationFragment
-import com.challengefy.estimate.fragment.EstimateFragment
-import com.challengefy.estimate.viewmodel.HomeViewModel
-import com.challengefy.map.fragment.MapFragment
+import com.challengefy.feature.address.activity.AddressSearchActivity
+import com.challengefy.feature.estimate.fragment.DestinationFragment
+import com.challengefy.feature.estimate.fragment.EstimateFragment
+import com.challengefy.feature.estimate.viewmodel.HomeViewModel
+import com.challengefy.feature.map.fragment.MapFragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject

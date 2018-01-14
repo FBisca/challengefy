@@ -1,4 +1,4 @@
-package com.challengefy.estimate.fragment
+package com.challengefy.feature.estimate.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
