@@ -8,12 +8,16 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.support.transition.TransitionManager
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.util.Pair
+import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewGroup
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
-import com.challengefy.estimate.fragment.DestinationFragment
+import com.challengefy.destination.activity.DestinationActivity
+import com.challengefy.estimate.fragment.AddressesFragment
 import com.challengefy.estimate.viewmodel.EstimateViewModel
 import com.challengefy.map.fragment.MapFragment
 import io.reactivex.disposables.CompositeDisposable
@@ -38,7 +42,7 @@ class EstimateActivity : BaseActivity() {
     private val ctnRoot by lazy { findViewById<ViewGroup>(R.id.estimate_ctn_root) }
 
     private val mapFragment = MapFragment.newInstance()
-    private val destinationFragment = DestinationFragment.newInstance()
+    private val destinationFragment = AddressesFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +66,10 @@ class EstimateActivity : BaseActivity() {
                 PERMISSION_DENIED -> showLocationPermissionDenied()
             }
         }
+    }
+
+    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+        super.onActivityReenter(resultCode, data)
     }
 
     private fun showLocationPermissionDenied() {
@@ -105,5 +113,10 @@ class EstimateActivity : BaseActivity() {
 
     private fun Disposable.addDisposable() {
         disposables.add(this)
+    }
+
+    fun goToDestination(cardDestination: CardView) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, Pair.create(cardDestination, "name"))
+        startActivityForResult(DestinationActivity.startIntent(this), 0, options.toBundle())
     }
 }

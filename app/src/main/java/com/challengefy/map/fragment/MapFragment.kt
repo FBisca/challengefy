@@ -28,7 +28,6 @@ class MapFragment : SupportMapFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getMapAsync {
-            it.uiSettings.isMyLocationButtonEnabled = true
             it.uiSettings.setAllGesturesEnabled(true)
         }
     }
@@ -36,7 +35,6 @@ class MapFragment : SupportMapFragment() {
     fun activateMyLocation() {
         context?.let {
             if (ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                getMapAsync { it.isMyLocationEnabled = true }
             }
         }
     }

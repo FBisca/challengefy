@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <data>
+    <variable
+        name="address"
+        type="com.challengefy.data.model.Address"/>
+  </data>
+
+  <android.support.constraint.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="8dp">
+
+    <TextView
+        android:id="@+id/item_address_txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/black_85"
+        android:text="@{address.title}"
+        tools:text="Google Office"/>
+
+    <TextView
+        android:id="@+id/item_address_txt_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black_55"
+        android:text="@{address.description}"
+        app:layout_constraintTop_toBottomOf="@+id/item_address_txt_title"
+        tools:text="345 Spear Street - San Francisco, CA 94105"/>
+
+  </android.support.constraint.ConstraintLayout>
+
+</layout>

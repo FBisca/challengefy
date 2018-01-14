@@ -20,6 +20,10 @@
         android:name=".estimate.activity.EstimateActivity"
         android:screenOrientation="portrait"/>
 
+    <activity
+        android:name=".destination.activity.DestinationActivity"
+        android:theme="@style/AppTheme.Translucent"/>
+
     <activity-alias
         android:name=".Launcher"
         android:targetActivity=".home.activity.SplashActivity">
