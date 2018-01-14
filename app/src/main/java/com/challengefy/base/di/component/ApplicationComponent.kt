@@ -4,6 +4,7 @@ import android.content.Context
 import com.challengefy.App
 import com.challengefy.base.di.module.ActivityBindModule
 import com.challengefy.base.di.module.DataModule
+import com.challengefy.base.di.module.LoggingModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.MembersInjector
@@ -15,7 +16,8 @@ import javax.inject.Singleton
         modules = [
             AndroidInjectionModule::class,
             ActivityBindModule::class,
-            DataModule::class
+            DataModule::class,
+            LoggingModule::class
         ]
 )
 interface ApplicationComponent : MembersInjector<App> {

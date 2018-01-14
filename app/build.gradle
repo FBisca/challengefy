@@ -35,19 +35,30 @@ androidExtensions {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    // Support Libraries
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:support-v4:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
     implementation "com.android.support:transition:$support_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
+
+    // Reactive World
     implementation "io.reactivex.rxjava2:rxjava:2.1.8"
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
 
+    // Play Services stuff
     implementation "com.google.android.gms:play-services-maps:$playServices_version"
     implementation "com.google.android.gms:play-services-location:$playServices_version"
     implementation "com.google.android.gms:play-services-places:$playServices_version"
+
+    // Network
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
     // Utils
     implementation "com.airbnb.android:lottie:2.5.0-beta2"
@@ -59,11 +70,13 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
+    // Unit Tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.11.0'
     testImplementation "org.powermock:powermock-module-junit4:2.0.0-beta.5"
     testImplementation "org.powermock:powermock-api-mockito2:2.0.0-beta.5"
 
+    // Instrumented
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'

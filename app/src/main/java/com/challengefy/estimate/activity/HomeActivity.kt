@@ -21,6 +21,7 @@ import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
 import com.challengefy.destination.activity.AddressSearchActivity
 import com.challengefy.estimate.fragment.DestinationFragment
+import com.challengefy.estimate.fragment.EstimateFragment
 import com.challengefy.estimate.viewmodel.HomeViewModel
 import com.challengefy.map.fragment.MapFragment
 import io.reactivex.disposables.CompositeDisposable
@@ -45,9 +46,10 @@ class HomeActivity : BaseActivity() {
     private val ctnRoot by lazy { findViewById<ViewGroup>(R.id.estimate_ctn_root) }
 
     private val mapFragment = MapFragment.newInstance()
-    private val addressesFragment = DestinationFragment.newInstance()
+    private val destinationFragment = DestinationFragment.newInstance()
 
-    private var address: Address? = null
+    private var pickup: Address? = null
+    private var destination: Address? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,13 +79,17 @@ class HomeActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DESTINATION) {
             val address = data?.getParcelableExtra<Address>(AddressSearchActivity.RESULT_ADDRESS)
-            this.address = address
+            this.destination = address
             address?.let { destinationReceived(address) }
         }
     }
 
-    private fun destinationReceived(address: Address) {
-        addressesFragment.showDestination(address)
+    private fun destinationReceived(destination: Address) {
+        pickup?.let {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.estimate_container_content, EstimateFragment.newInstance(it, destination))
+                    .commit()
+        }
     }
 
     private fun showLocationPermissionDenied() {
@@ -99,7 +105,7 @@ class HomeActivity : BaseActivity() {
 
     private fun initDestinationFragment() {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.estimate_container_content, addressesFragment)
+                .replace(R.id.estimate_container_content, destinationFragment)
                 .commit()
     }
 
@@ -116,7 +122,8 @@ class HomeActivity : BaseActivity() {
         viewModel.currentLocation()
                 .subscribe(
                         {
-                            addressesFragment.showPickup(it)
+                            pickup = it
+                            destinationFragment.showPickup(it)
                             mapFragment.centerMap(it.position.latitude, it.position.longitude)
                         },
                         {
@@ -135,6 +142,6 @@ class HomeActivity : BaseActivity() {
                 this,
                 Pair.create(cardDestination, getString(R.string.transition_address_search))
         )
-        startActivityForResult(AddressSearchActivity.startIntent(this, address), REQUEST_CODE_DESTINATION, options.toBundle())
+        startActivityForResult(AddressSearchActivity.startIntent(this, destination), REQUEST_CODE_DESTINATION, options.toBundle())
     }
 }

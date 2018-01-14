@@ -5,7 +5,8 @@ import javax.inject.Singleton
 
 @Module(includes = [
     DataSourceModule::class,
-    RepositoryModule::class
+    RepositoryModule::class,
+    NetworkModule::class
 ])
 @Singleton
 class DataModule

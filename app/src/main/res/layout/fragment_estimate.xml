@@ -26,11 +26,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="32dp"
-        android:alpha="0.9"
         android:foreground="?selectableItemBackground"
-        android:scaleX="0.95"
-        android:scaleY="0.95"
-        android:translationY="10dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
         app:contentPadding="8dp"
@@ -57,9 +53,8 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:gravity="center_vertical"
-            android:hint="@string/estimate_pickup_hint"
             android:minHeight="48dp"
-            android:text="@{pickup.title}"
+            android:text="@{pickup == null ? @string/estimate_pickup_hint : pickup.title}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
             android:textColor="@color/black_55"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -88,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?selectableItemBackground"
@@ -117,9 +113,8 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:gravity="center_vertical"
-            android:hint="@string/estimate_destination_hint"
             android:minHeight="48dp"
-            android:text="@{destination.title}"
+            android:text="@{destination == null ? @string/estimate_destination_hint : destination.title}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
             android:textColor="@color/black_55"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -138,6 +133,18 @@
             app:srcCompat="@drawable/ic_chevron_right_black_24dp"/>
 
       </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+      <android.support.v7.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
 
     </android.support.v7.widget.CardView>
 
