@@ -19,8 +19,8 @@ import android.view.ViewGroup
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
-import com.challengefy.destination.activity.DestinationActivity
-import com.challengefy.estimate.fragment.AddressesFragment
+import com.challengefy.destination.activity.AddressSearchActivity
+import com.challengefy.estimate.fragment.DestinationFragment
 import com.challengefy.estimate.viewmodel.HomeViewModel
 import com.challengefy.map.fragment.MapFragment
 import io.reactivex.disposables.CompositeDisposable
@@ -45,7 +45,7 @@ class HomeActivity : BaseActivity() {
     private val ctnRoot by lazy { findViewById<ViewGroup>(R.id.estimate_ctn_root) }
 
     private val mapFragment = MapFragment.newInstance()
-    private val addressesFragment = AddressesFragment.newInstance()
+    private val addressesFragment = DestinationFragment.newInstance()
 
     private var address: Address? = null
 
@@ -76,7 +76,7 @@ class HomeActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DESTINATION) {
-            val address = data?.getParcelableExtra<Address>(DestinationActivity.RESULT_ADDRESS)
+            val address = data?.getParcelableExtra<Address>(AddressSearchActivity.RESULT_ADDRESS)
             this.address = address
             address?.let { destinationReceived(address) }
         }
@@ -131,7 +131,10 @@ class HomeActivity : BaseActivity() {
 
     @SuppressLint("RestrictedApi")
     fun goToDestination(cardDestination: CardView) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, Pair.create(cardDestination, "name"))
-        startActivityForResult(DestinationActivity.startIntent(this, address), REQUEST_CODE_DESTINATION, options.toBundle())
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                Pair.create(cardDestination, getString(R.string.transition_address_search))
+        )
+        startActivityForResult(AddressSearchActivity.startIntent(this, address), REQUEST_CODE_DESTINATION, options.toBundle())
     }
 }
