@@ -4,13 +4,14 @@
         xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
         name="estimate"
         type="com.challengefy.data.model.Estimate"/>
   </data>
 
   <android.support.constraint.ConstraintLayout
-      android:layout_width="130dp"
+      android:layout_width="@dimen/estimate_view_width"
       android:layout_height="wrap_content"
       android:padding="8dp">
 
@@ -18,18 +19,22 @@
         android:id="@+id/estimate_img_icon"
         android:layout_width="72dp"
         android:layout_height="72dp"
+        android:background="@drawable/bg_estimate_icon"
+        android:scaleType="fitCenter"
+        app:imageUrl="@{estimate.vehicle.icons.regular}"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:background="@color/black_35"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/estimate_txt_vehicle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@{estimate.vehicle.shortName}"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/black_85"
-        android:text="@{estimate.vehicle.shortName}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/estimate_img_icon"
@@ -39,16 +44,16 @@
         android:id="@+id/estimate_txt_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textColor="@color/black_85"
         android:layout_marginTop="4dp"
+        android:background="@drawable/bg_estimate_value"
         android:fontFamily="sans-serif-medium"
+        android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:paddingBottom="4dp"
         android:paddingTop="4dp"
         android:text="@{estimate.price}"
-        android:background="@drawable/bg_estimate_value"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/black_85"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/estimate_txt_vehicle"

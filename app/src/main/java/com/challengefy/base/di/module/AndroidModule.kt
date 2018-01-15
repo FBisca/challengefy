@@ -9,6 +9,7 @@ import java.util.*
 @Module
 class AndroidModule {
 
+    @Suppress("DEPRECATION")
     @Provides
     fun providesLocale(context: Context): Locale {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
