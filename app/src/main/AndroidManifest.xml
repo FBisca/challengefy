@@ -13,7 +13,7 @@
       android:theme="@style/AppTheme">
 
     <activity
-        android:name="com.challengefy.feature.home.activity.SplashActivity"
+        android:name="com.challengefy.feature.launch.activity.SplashActivity"
         android:screenOrientation="portrait"/>
 
     <activity
@@ -26,7 +26,7 @@
 
     <activity-alias
         android:name=".Launcher"
-        android:targetActivity="com.challengefy.feature.home.activity.SplashActivity">
+        android:targetActivity="com.challengefy.feature.launch.activity.SplashActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

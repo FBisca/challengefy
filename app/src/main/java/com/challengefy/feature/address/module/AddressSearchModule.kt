@@ -5,6 +5,4 @@ import dagger.Module
 
 @Module
 @ActivityScope
-class AddressSearchModule {
-
-}
+class AddressSearchModule

@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.transition.TransitionManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.util.Pair
 import android.support.v7.widget.CardView
@@ -24,11 +25,13 @@ import com.challengefy.feature.estimate.fragment.DestinationFragment
 import com.challengefy.feature.estimate.fragment.EstimateFragment
 import com.challengefy.feature.estimate.viewmodel.HomeViewModel
 import com.challengefy.feature.map.fragment.MapFragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     companion object {
         private const val REQUEST_CODE_PERMISSION = 1
@@ -36,6 +39,9 @@ class HomeActivity : BaseActivity() {
 
         fun startIntent(context: Context) = Intent(context, HomeActivity::class.java)
     }
+
+    @Inject
+    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var viewModel: HomeViewModel
@@ -144,4 +150,6 @@ class HomeActivity : BaseActivity() {
         )
         startActivityForResult(AddressSearchActivity.startIntent(this, destination), REQUEST_CODE_DESTINATION, options.toBundle())
     }
+
+    override fun supportFragmentInjector() = fragmentInjector
 }

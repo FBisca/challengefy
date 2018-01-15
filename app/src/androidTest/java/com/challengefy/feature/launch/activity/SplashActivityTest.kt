@@ -1,4 +1,4 @@
-package com.challengefy.feature.home.activity
+package com.challengefy.feature.launch.activity
 
 import android.content.Intent
 import android.support.test.espresso.intent.Intents

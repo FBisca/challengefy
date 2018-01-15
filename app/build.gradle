@@ -20,7 +20,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField("String", "BASE_URL", "${release_baseUrl}")
+            buildConfigField("String", "AUTH_TOKEN", "${release_token}")
         }
+
+        debug {
+            buildConfigField("String", "BASE_URL", "${debug_baseUrl}")
+            buildConfigField("String", "AUTH_TOKEN", "${debug_token}")
+        }
+
     }
 
     dataBinding {

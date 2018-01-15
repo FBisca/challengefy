@@ -3,6 +3,7 @@ package com.challengefy.base.di.component
 import android.content.Context
 import com.challengefy.App
 import com.challengefy.base.di.module.ActivityBindModule
+import com.challengefy.base.di.module.AndroidModule
 import com.challengefy.base.di.module.DataModule
 import com.challengefy.base.di.module.LoggingModule
 import dagger.BindsInstance
@@ -16,6 +17,7 @@ import javax.inject.Singleton
         modules = [
             AndroidInjectionModule::class,
             ActivityBindModule::class,
+            AndroidModule::class,
             DataModule::class,
             LoggingModule::class
         ]

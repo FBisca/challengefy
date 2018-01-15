@@ -1,5 +1,8 @@
 package com.challengefy.base.di.module
 
+import com.challengefy.base.scheduler.AppSchedulerManager
+import com.challengefy.base.scheduler.SchedulerManager
+import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton
 
@@ -9,4 +12,9 @@ import javax.inject.Singleton
     NetworkModule::class
 ])
 @Singleton
-class DataModule
+abstract class DataModule {
+
+    @Binds
+    abstract fun bindsSchedulerManager(schedulerManager: AppSchedulerManager): SchedulerManager
+
+}

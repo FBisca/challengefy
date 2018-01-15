@@ -9,8 +9,5 @@ data class EstimateRideRequest(
 data class Stop(
         @SerializedName("loc") val position: List<Double>,
         @SerializedName("name") val name: String,
-        @SerializedName("num") val number: String,
-        @SerializedName("addr") val address: String,
-        @SerializedName("city") val city: String,
-        @SerializedName("country") val country: String
+        @SerializedName("addr") val address: String
 )
