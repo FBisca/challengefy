@@ -1,12 +1,9 @@
 package com.challengefy.feature.estimate.viewmodel
 
-import com.challengefy.Navigator
 import com.challengefy.base.di.scope.FragmentScope
 import javax.inject.Inject
 
 @FragmentScope
-class AddressesViewModel @Inject constructor(private val navigator: Navigator) {
+class AddressesViewModel @Inject constructor() {
 
-    fun onDestinationClicked() {
-    }
 }

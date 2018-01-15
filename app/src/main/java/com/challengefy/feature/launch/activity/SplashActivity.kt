@@ -1,19 +1,15 @@
 package com.challengefy.feature.launch.activity
 
 import android.os.Bundle
-import com.challengefy.Navigator
 import com.challengefy.base.activity.BaseActivity
-import javax.inject.Inject
+import com.challengefy.feature.estimate.activity.HomeActivity
 
 class SplashActivity : BaseActivity() {
-
-    @Inject
-    lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        navigator.goToEstimateScreen()
+        startActivity(HomeActivity.startIntent(this))
         finish()
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+    <variable
+        name="estimate"
+        type="com.challengefy.data.model.Estimate"/>
+  </data>
+
+  <android.support.constraint.ConstraintLayout
+      android:layout_width="130dp"
+      android:layout_height="wrap_content"
+      android:padding="8dp">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/estimate_img_icon"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:background="@color/black_35"/>
+
+    <TextView
+        android:id="@+id/estimate_txt_vehicle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black_85"
+        android:text="@{estimate.vehicle.shortName}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/estimate_img_icon"
+        tools:text="Vehicle Name"/>
+
+    <TextView
+        android:id="@+id/estimate_txt_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/black_85"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif-medium"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="@{estimate.price}"
+        android:background="@drawable/bg_estimate_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/estimate_txt_vehicle"
+        tools:text="$20,00"/>
+
+  </android.support.constraint.ConstraintLayout>
+</layout>
