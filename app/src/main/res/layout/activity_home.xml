@@ -65,4 +65,6 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/estimate_ctn_location_permission_denied"/>
 
+  <include layout="@layout/fragment_finding_location"/>
+
 </android.support.constraint.ConstraintLayout>

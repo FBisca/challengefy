@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+        name="viewModel"
+        type="com.challengefy.feature.estimate.viewmodel.PickupViewModel"/>
+  </data>
+
+  <android.support.constraint.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:background="@color/colorPrimary">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/pickup_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="4dp"
+        app:contentPaddingBottom="8dp"
+        app:contentPaddingLeft="16dp"
+        app:contentPaddingRight="16dp"
+        app:contentPaddingTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/pickup_card_location_permission"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible">
+
+      <android.support.constraint.ConstraintLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <android.support.constraint.Group
+            android:id="@+id/pickup_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="pickup_loading_animation,pickup_location_text"/>
+
+        <android.support.constraint.Group
+            android:id="@+id/pickup_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="pickup_img_icon,pickup_txt_address"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/pickup_loading_animation"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:translationY="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="lottiefiles/search_location.json"
+            app:lottie_loop="true"
+            tools:background="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/pickup_location_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Finding where we\nshould pick you"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/black_85"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/pickup_img_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:tint="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_location_on_black_24dp"/>
+
+        <TextView
+            android:id="@+id/pickup_txt_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center_vertical"
+            android:hint="@string/estimate_pickup_hint"
+            android:text="@{viewModel.pickupAddress.get().title}"
+            android:minHeight="48dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/black_55"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/pickup_img_icon"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+      </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/pickup_card_location_permission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:contentPadding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible">
+
+      <android.support.constraint.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/pickup_img_icon_location"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:scaleType="fitCenter"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_near_me_black_24dp"/>
+
+        <TextView
+            android:id="@+id/pickup_txt_location_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/location_permission_denied"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/white_90"
+            app:layout_constraintBottom_toBottomOf="@+id/pickup_img_icon_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/pickup_img_icon_location"
+            app:layout_constraintTop_toTopOf="@+id/pickup_img_icon_location"/>
+
+        <TextView
+            android:id="@+id/pickup_txt_location_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/location_permission_denied_description"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/white_90"
+            app:layout_constraintTop_toBottomOf="@+id/pickup_img_icon_location"/>
+
+        <View
+            android:id="@+id/pickup_divisor_location"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/black_35"
+            app:layout_constraintTop_toBottomOf="@+id/pickup_txt_location_description"/>
+
+        <TextView
+            android:id="@+id/pickup_txt_location_activate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/activate_location"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/white_90"
+            android:onClick="@{() -> viewModel.onActivateLocationClick() }"
+            app:layout_constraintTop_toBottomOf="@+id/pickup_divisor_location"/>
+
+      </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+  </android.support.constraint.ConstraintLayout>
+</layout>

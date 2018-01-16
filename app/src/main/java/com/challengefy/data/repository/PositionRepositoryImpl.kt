@@ -10,13 +10,37 @@ class PositionRepositoryImpl @Inject constructor(
         private val positionSource: PositionSource
 ) : PositionRepository {
 
-    override fun getCurrentPosition(): Single<Position> {
-        val locationRequest = LocationRequest().apply {
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            interval = 1000
-        }
+    private val locationRequest = LocationRequest().apply {
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        interval = 1000
+    }
 
+    override fun getCurrentPosition(): Single<Position> {
         return positionSource.positionUpdates(locationRequest)
                 .firstOrError()
+    }
+
+    override fun isLocationEnabled(): Single<Boolean> {
+        return positionSource.isLocationEnabled(locationRequest)
+    }
+
+    override fun isPermissionGranted(): Single<Boolean> {
+        return positionSource.isPermissionGranted()
+    }
+
+    override fun getLocationState(): Single<PositionRepository.LocationState> {
+        return isPermissionGranted()
+                .concatWith(isLocationEnabled())
+                .toList()
+                .map {
+                    val granted = it[0]
+                    val enabled = it[1]
+
+                    when {
+                        !granted -> PositionRepository.LocationState.NO_PERMISSION
+                        !enabled -> PositionRepository.LocationState.DISABLED
+                        else -> PositionRepository.LocationState.ACTIVE
+                    }
+                }
     }
 }

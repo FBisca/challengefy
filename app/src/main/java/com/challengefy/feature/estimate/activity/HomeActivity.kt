@@ -8,27 +8,23 @@ import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
-import android.support.transition.TransitionManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.util.Pair
 import android.support.v7.widget.CardView
-import android.view.View
-import android.view.ViewGroup
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
 import com.challengefy.feature.address.activity.AddressSearchActivity
-import com.challengefy.feature.estimate.fragment.DestinationFragment
 import com.challengefy.feature.estimate.fragment.EstimateFragment
+import com.challengefy.feature.estimate.fragment.PickupFragment
+import com.challengefy.feature.estimate.navigator.HomeNavigator
 import com.challengefy.feature.estimate.viewmodel.HomeViewModel
 import com.challengefy.feature.map.fragment.MapFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
@@ -46,13 +42,11 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var viewModel: HomeViewModel
 
-    private val disposables = CompositeDisposable()
-
-    private val ctnLocationDenied by lazy { findViewById<View>(R.id.estimate_ctn_location_permission_denied) }
-    private val ctnRoot by lazy { findViewById<ViewGroup>(R.id.estimate_ctn_root) }
+    @Inject
+    lateinit var homeNavigator: HomeNavigator
 
     private val mapFragment = MapFragment.newInstance()
-    private val destinationFragment = DestinationFragment.newInstance()
+    private val pickupFragment = PickupFragment()
 
     private var pickup: Address? = null
     private var destination: Address? = null
@@ -67,22 +61,18 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     override fun onResume() {
         super.onResume()
-        checkForPermission()
+//        checkForPermission()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSION) {
-            val result = grantResults.firstOrNull() ?: PERMISSION_DENIED
-            when (result) {
-                PERMISSION_GRANTED -> initLocation()
-                PERMISSION_DENIED -> showLocationPermissionDenied()
-            }
-        }
+        val result = grantResults.firstOrNull() ?: PERMISSION_DENIED
+        homeNavigator.postPermissionResult(requestCode, PERMISSION_GRANTED == result)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        homeNavigator.postActivityResult(requestCode, resultCode)
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DESTINATION) {
             val address = data?.getParcelableExtra<Address>(AddressSearchActivity.RESULT_ADDRESS)
             this.destination = address
@@ -98,10 +88,6 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
         }
     }
 
-    private fun showLocationPermissionDenied() {
-        TransitionManager.beginDelayedTransition(ctnRoot)
-        ctnLocationDenied.visibility = View.VISIBLE
-    }
 
     private fun initMapFragment() {
         supportFragmentManager.beginTransaction()
@@ -111,7 +97,7 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     private fun initDestinationFragment() {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.estimate_container_content, destinationFragment)
+                .replace(R.id.estimate_container_content, pickupFragment)
                 .commit()
     }
 
@@ -125,21 +111,6 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     private fun initLocation() {
         mapFragment.enableCurrentLocation()
-        viewModel.currentLocation()
-                .subscribe(
-                        {
-                            pickup = it
-                            destinationFragment.showPickup(it)
-                            mapFragment.centerMap(it.position.latitude, it.position.longitude)
-                        },
-                        {
-
-                        }
-                )
-    }
-
-    private fun Disposable.addDisposable() {
-        disposables.add(this)
     }
 
     @SuppressLint("RestrictedApi")
