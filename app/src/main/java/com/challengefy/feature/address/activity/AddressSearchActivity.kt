@@ -15,6 +15,7 @@ import com.challengefy.databinding.ActivityAddressSearchBinding
 import com.challengefy.feature.address.adapter.AddressSearchAdapter
 import com.challengefy.feature.address.viewmodel.AddressSearchViewModel
 import com.jakewharton.rxbinding2.widget.textChangeEvents
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
@@ -93,14 +94,18 @@ class AddressSearchActivity : BaseActivity() {
     }
 
     private fun bindTextChangeEvents() {
-        binding.addressSearchInpAddress.textChangeEvents()
-                .skip(1)
-                .map { it.text().toString() }
+        textChangeEvents()
                 .subscribe(
                         { viewModel.inputSearch(it) },
                         { Timber.d(it) }
                 )
                 .addToDisposable()
+    }
+
+    private fun textChangeEvents(): Observable<String> {
+        return binding.addressSearchInpAddress.textChangeEvents()
+                .skipInitialValue()
+                .map { it.text().toString() }
     }
 
     private fun finishWithResult(address: Address) {

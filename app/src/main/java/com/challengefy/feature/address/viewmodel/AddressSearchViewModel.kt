@@ -13,7 +13,6 @@ import javax.inject.Inject
 
 @ActivityScope
 class AddressSearchViewModel @Inject constructor(
-        private val positionRepository: PositionRepository,
         private val placeRepository: PlaceRepository
 ) {
 

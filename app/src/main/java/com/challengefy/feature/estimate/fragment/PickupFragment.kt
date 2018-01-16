@@ -46,10 +46,6 @@ class PickupFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.viewState.removeOnPropertyChangedCallback(viewStateListener)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         viewModel.dispose()
     }
 

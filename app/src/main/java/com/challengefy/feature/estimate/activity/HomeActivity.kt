@@ -1,24 +1,16 @@
 package com.challengefy.feature.estimate.activity
 
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.databinding.Observable
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v4.util.Pair
-import android.support.v7.widget.CardView
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
-import com.challengefy.feature.address.activity.AddressSearchActivity
-import com.challengefy.feature.estimate.fragment.EstimateFragment
+import com.challengefy.feature.estimate.fragment.DestinationFragment
 import com.challengefy.feature.estimate.fragment.PickupFragment
 import com.challengefy.feature.estimate.navigator.HomeNavigator
 import com.challengefy.feature.estimate.viewmodel.HomeViewModel
@@ -30,9 +22,6 @@ import javax.inject.Inject
 class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     companion object {
-        private const val REQUEST_CODE_PERMISSION = 1
-        private const val REQUEST_CODE_DESTINATION = 2
-
         fun startIntent(context: Context) = Intent(context, HomeActivity::class.java)
     }
 
@@ -48,20 +37,20 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
     private val mapFragment = MapFragment.newInstance()
     private val pickupFragment = PickupFragment()
 
-    private var pickup: Address? = null
-    private var destination: Address? = null
+    private val viewStateListener = ViewStateChangeListener()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         initMapFragment()
-        initDestinationFragment()
+        initPickupFragment()
+        viewModel.viewState.addOnPropertyChangedCallback(viewStateListener)
     }
 
-    override fun onResume() {
-        super.onResume()
-//        checkForPermission()
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.viewState.removeOnPropertyChangedCallback(viewStateListener)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -72,22 +61,8 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        homeNavigator.postActivityResult(requestCode, resultCode)
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DESTINATION) {
-            val address = data?.getParcelableExtra<Address>(AddressSearchActivity.RESULT_ADDRESS)
-            this.destination = address
-            address?.let { destinationReceived(address) }
-        }
+        homeNavigator.postActivityResult(requestCode, resultCode, data)
     }
-
-    private fun destinationReceived(destination: Address) {
-        pickup?.let {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.estimate_container_content, EstimateFragment.newInstance(it, destination))
-                    .commit()
-        }
-    }
-
 
     private fun initMapFragment() {
         supportFragmentManager.beginTransaction()
@@ -95,32 +70,27 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
                 .commit()
     }
 
-    private fun initDestinationFragment() {
+    private fun initPickupFragment() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.estimate_container_content, pickupFragment)
                 .commit()
     }
 
-    private fun checkForPermission() {
-        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
-            initLocation()
-        } else {
-            ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
-        }
-    }
-
-    private fun initLocation() {
-        mapFragment.enableCurrentLocation()
-    }
-
-    @SuppressLint("RestrictedApi")
-    fun goToDestination(cardDestination: CardView) {
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                this,
-                Pair.create(cardDestination, getString(R.string.transition_address_search))
-        )
-        startActivityForResult(AddressSearchActivity.startIntent(this, destination), REQUEST_CODE_DESTINATION, options.toBundle())
+    private fun initDestinationFragment(pickUpAddress: Address) {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.estimate_container_content, DestinationFragment.newInstance(pickUpAddress))
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun supportFragmentInjector() = fragmentInjector
+
+    inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable, propertyId: Int) {
+            val viewState = viewModel.viewState.get()
+            if (viewState == HomeViewModel.ViewState.DESTINATION) {
+                initDestinationFragment(viewModel.pickupAddress.get())
+            }
+        }
+    }
 }
