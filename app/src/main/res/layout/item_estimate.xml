@@ -4,10 +4,13 @@
         xmlns:tools="http://schemas.android.com/tools">
 
   <data>
-
     <variable
         name="estimate"
         type="com.challengefy.data.model.Estimate"/>
+
+    <variable
+        name="selected"
+        type="Boolean"/>
   </data>
 
   <android.support.constraint.ConstraintLayout
@@ -20,8 +23,12 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:background="@drawable/bg_estimate_icon"
+        android:padding="16dp"
         android:scaleType="fitCenter"
+        android:tint="@color/white"
         app:imageUrl="@{estimate.vehicle.icons.regular}"
+        app:placeHolder="@{@drawable/ic_directions_car_black_24dp}"
+        app:errorImage="@{@drawable/ic_directions_car_black_24dp}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -45,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:background="@drawable/bg_estimate_value"
+        android:background="@{selected ? @drawable/bg_estimate_value_selected : @drawable/bg_estimate_value}"
         android:fontFamily="sans-serif-medium"
         android:paddingBottom="4dp"
         android:paddingLeft="8dp"
@@ -53,10 +60,12 @@
         android:paddingTop="4dp"
         android:text="@{estimate.price}"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textColor="@color/black_85"
+        android:textColor="@{selected ? @color/white : @color/black_85}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/estimate_txt_vehicle"
+        tools:background="@drawable/bg_estimate_value"
+        tools:textColor="@color/black_85"
         tools:text="$20,00"/>
 
   </android.support.constraint.ConstraintLayout>

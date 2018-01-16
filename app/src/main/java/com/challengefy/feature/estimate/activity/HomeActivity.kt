@@ -11,6 +11,7 @@ import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
 import com.challengefy.feature.estimate.fragment.DestinationFragment
+import com.challengefy.feature.estimate.fragment.EstimateFragment
 import com.challengefy.feature.estimate.fragment.PickupFragment
 import com.challengefy.feature.estimate.navigator.HomeNavigator
 import com.challengefy.feature.estimate.viewmodel.HomeViewModel
@@ -64,6 +65,8 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
         homeNavigator.postActivityResult(requestCode, resultCode, data)
     }
 
+    override fun supportFragmentInjector() = fragmentInjector
+
     private fun initMapFragment() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.estimate_container_map, mapFragment)
@@ -83,14 +86,22 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
                 .commit()
     }
 
-    override fun supportFragmentInjector() = fragmentInjector
+    private fun initEstimateFragment(pickupAddress: Address, destinationAddress: Address) {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.estimate_container_content, EstimateFragment.newInstance(pickupAddress, destinationAddress))
+                .addToBackStack(null)
+                .commit()
+    }
 
     inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable, propertyId: Int) {
             val viewState = viewModel.viewState.get()
-            if (viewState == HomeViewModel.ViewState.DESTINATION) {
-                initDestinationFragment(viewModel.pickupAddress.get())
+            when (viewState) {
+                HomeViewModel.ViewState.DESTINATION -> initDestinationFragment(viewModel.pickupAddress.get())
+                HomeViewModel.ViewState.ESTIMATE -> initEstimateFragment(viewModel.pickupAddress.get(), viewModel.destinationAddress.get())
+                else -> Unit // Do Nothing
             }
         }
+
     }
 }

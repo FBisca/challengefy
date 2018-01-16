@@ -3,11 +3,14 @@ package com.challengefy.feature.estimate.fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.transition.AutoTransition
+import android.support.transition.Transition
+import android.support.transition.TransitionListenerAdapter
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.HORIZONTAL
 import android.support.v7.widget.LinearSnapHelper
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +18,6 @@ import com.challengefy.data.model.Address
 import com.challengefy.data.model.Estimate
 import com.challengefy.databinding.FragmentEstimateBinding
 import com.challengefy.feature.estimate.adapter.EstimateAdapter
-import com.challengefy.feature.estimate.adapter.EstimateMarginDecoration
 import com.challengefy.feature.estimate.viewmodel.EstimateViewModel
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
@@ -68,7 +70,7 @@ class EstimateFragment : Fragment() {
         snapHelper.attachToRecyclerView(estimateList)
         estimateList.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
         estimateList.adapter = adapter
-        estimateList.addItemDecoration(EstimateMarginDecoration(estimateList.context))
+        estimateList.addOnScrollListener(ScrollListener())
     }
 
     private fun bindEstimates() {
@@ -84,16 +86,33 @@ class EstimateFragment : Fragment() {
         TransitionManager.beginDelayedTransition(binding.root as ViewGroup, AutoTransition()
                 .addTarget(binding.estimateCardContainer)
                 .addTarget(binding.estimateLoading)
+                .addTarget(binding.estimateList)
+                .addTarget(binding.estimateTxtCarTitle)
+                .addTarget(binding.estimateBtnRequest)
         )
+
+        binding.estimateCardContainer.layoutParams.width = (130 * resources.displayMetrics.density).toInt()
+        binding.estimateListGroup.visibility = View.GONE
         binding.estimateLoading.visibility = View.VISIBLE
     }
 
     private fun bindItems(estimates: List<Estimate>) {
         TransitionManager.beginDelayedTransition(binding.estimateCardContainer, AutoTransition()
+                .addTarget(binding.estimateCardContainer)
                 .addTarget(binding.estimateList)
                 .addTarget(binding.estimateLoading)
+                .addTarget(binding.estimateTxtCarTitle)
+                .addTarget(binding.estimateBtnRequest)
+                .addListener(object: TransitionListenerAdapter() {
+                    override fun onTransitionEnd(transition: Transition) {
+                        val manager = binding.estimateList.layoutManager as LinearLayoutManager
+                        manager.scrollToPositionWithOffset(0, 0)
+                    }
+                })
         )
+        binding.estimateCardContainer.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
         binding.estimateLoading.visibility = View.GONE
+        binding.estimateListGroup.visibility = View.VISIBLE
         adapter.setItems(estimates)
     }
 
@@ -105,4 +124,20 @@ class EstimateFragment : Fragment() {
         return arguments?.getParcelable(EXTRA_PICKUP) ?: throw IllegalArgumentException("Destination argument required")
     }
 
+    inner class ScrollListener : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            val view = recyclerView.findChildViewUnder(recyclerView.width / 2f, recyclerView.height / 2f)
+            if (view != null) {
+                val selectedPos = recyclerView.getChildAdapterPosition(view)
+                viewModel.itemSelected(selectedPos)
+                for (index in 0 until recyclerView.adapter.itemCount) {
+                    val viewHolder = recyclerView.findViewHolderForAdapterPosition(index) as EstimateAdapter.ViewHolder?
+                    viewHolder?.let {
+                        it.binding.selected = index == selectedPos
+                        it.binding.executePendingBindings()
+                    }
+                }
+            }
+        }
+    }
 }

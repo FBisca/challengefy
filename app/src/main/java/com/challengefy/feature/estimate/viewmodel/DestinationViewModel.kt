@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 @FragmentScope
 class DestinationViewModel @Inject constructor(
+        private val homeViewModel: HomeViewModel,
         private val homeNavigator: HomeNavigator
 ) : HomeNavigator.ResolutionListener {
 
@@ -40,6 +41,7 @@ class DestinationViewModel @Inject constructor(
 
     private fun locationReceived(address: Address) {
         destinationAddress.set(address)
+        homeViewModel.destinationReceived(address)
     }
 
     override fun onPermissionResult(requestCode: Int, granted: Boolean) {

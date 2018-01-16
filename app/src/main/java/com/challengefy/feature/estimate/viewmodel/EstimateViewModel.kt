@@ -1,5 +1,6 @@
 package com.challengefy.feature.estimate.viewmodel
 
+import android.databinding.ObservableField
 import com.challengefy.base.scheduler.SchedulerManager
 import com.challengefy.data.model.Address
 import com.challengefy.data.model.Estimate
@@ -15,10 +16,20 @@ class EstimateViewModel @Inject constructor(
         private val schedulerManager: SchedulerManager
 ) {
 
+    val itemSelected = ObservableField<Int>()
+
     fun estimate(): Single<List<Estimate>> {
         return rideRepository.estimateRide(pickup, destination)
                 .subscribeOn(schedulerManager.ioThread())
                 .observeOn(schedulerManager.mainThread())
+    }
+
+    fun itemSelected(selectedPos: Int) {
+        itemSelected.set(selectedPos)
+    }
+
+    fun onConfirmClick() {
+
     }
 
 }

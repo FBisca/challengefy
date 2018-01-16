@@ -87,6 +87,5 @@ class HomeNavigator @Inject constructor(
     interface ResolutionListener {
         fun onPermissionResult(requestCode: Int, granted: Boolean)
         fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-
     }
 }

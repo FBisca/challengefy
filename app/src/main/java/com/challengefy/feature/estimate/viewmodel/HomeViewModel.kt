@@ -23,7 +23,12 @@ class HomeViewModel @Inject constructor(
         viewState.set(ViewState.DESTINATION)
     }
 
+    fun destinationReceived(address: Address) {
+        destinationAddress.set(address)
+        viewState.set(ViewState.ESTIMATE)
+    }
+
     enum class ViewState {
-        PICKUP, DESTINATION
+        PICKUP, DESTINATION, ESTIMATE
     }
 }
