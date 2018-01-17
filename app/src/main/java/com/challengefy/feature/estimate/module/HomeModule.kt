@@ -4,6 +4,7 @@ import com.challengefy.base.di.scope.ActivityScope
 import com.challengefy.base.di.scope.FragmentScope
 import com.challengefy.feature.estimate.fragment.DestinationFragment
 import com.challengefy.feature.estimate.fragment.EstimateFragment
+import com.challengefy.feature.estimate.fragment.LookingForCarFragment
 import com.challengefy.feature.estimate.fragment.PickupFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -23,5 +24,9 @@ abstract class HomeModule {
     @FragmentScope
     @ContributesAndroidInjector()
     abstract fun injectorDestinationFragment(): DestinationFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector()
+    abstract fun injectorLookingForCarFragment(): LookingForCarFragment
 
 }

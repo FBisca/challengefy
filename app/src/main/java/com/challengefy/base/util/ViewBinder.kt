@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package com.challengefy.util
+package com.challengefy.base.util
 
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment

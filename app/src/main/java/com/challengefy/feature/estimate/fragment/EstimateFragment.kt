@@ -1,6 +1,7 @@
 package com.challengefy.feature.estimate.fragment
 
 import android.content.Context
+import android.databinding.Observable
 import android.os.Bundle
 import android.support.transition.AutoTransition
 import android.support.transition.Transition
@@ -15,18 +16,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.challengefy.data.model.Address
-import com.challengefy.data.model.Estimate
 import com.challengefy.databinding.FragmentEstimateBinding
 import com.challengefy.feature.estimate.adapter.EstimateAdapter
+import com.challengefy.feature.estimate.adapter.EstimateMarginDecoration
 import com.challengefy.feature.estimate.viewmodel.EstimateViewModel
 import dagger.android.support.AndroidSupportInjection
-import timber.log.Timber
 import javax.inject.Inject
 
 class EstimateFragment : Fragment() {
-
-    @Inject
-    lateinit var viewModel: EstimateViewModel
 
     companion object {
         private const val EXTRA_DESTINATION = "EXTRA_DESTINATION"
@@ -40,8 +37,12 @@ class EstimateFragment : Fragment() {
         }
     }
 
-    private val adapter = EstimateAdapter()
+    @Inject
+    lateinit var viewModel: EstimateViewModel
+
     private lateinit var binding: FragmentEstimateBinding
+    private val adapter = EstimateAdapter()
+    private val viewStateListener = ViewStateChangeListener()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -56,30 +57,29 @@ class EstimateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.viewState.addOnPropertyChangedCallback(viewStateListener)
+
         initView()
-        bindEstimates()
+
+        binding.viewModel = viewModel
+        viewModel.init()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.viewState.removeOnPropertyChangedCallback(viewStateListener)
+        viewModel.dispose()
     }
 
     private fun initView() {
-        binding.pickup = getPickupArgument()
-        binding.destination = getDestinationArgument()
-
         val estimateList = binding.estimateList
 
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(estimateList)
         estimateList.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
         estimateList.adapter = adapter
+        estimateList.addItemDecoration(EstimateMarginDecoration(estimateList.context))
         estimateList.addOnScrollListener(ScrollListener())
-    }
-
-    private fun bindEstimates() {
-        viewModel.estimate()
-                .doOnSubscribe { showLoading() }
-                .subscribe(
-                        { bindItems(it) },
-                        { Timber.d(it) }
-                )
     }
 
     private fun showLoading() {
@@ -96,7 +96,7 @@ class EstimateFragment : Fragment() {
         binding.estimateLoading.visibility = View.VISIBLE
     }
 
-    private fun bindItems(estimates: List<Estimate>) {
+    private fun showEstimates() {
         TransitionManager.beginDelayedTransition(binding.estimateCardContainer, AutoTransition()
                 .addTarget(binding.estimateCardContainer)
                 .addTarget(binding.estimateList)
@@ -111,9 +111,9 @@ class EstimateFragment : Fragment() {
                 })
         )
         binding.estimateCardContainer.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+        binding.estimateCardContainer.requestLayout()
         binding.estimateLoading.visibility = View.GONE
         binding.estimateListGroup.visibility = View.VISIBLE
-        adapter.setItems(estimates)
     }
 
     fun getDestinationArgument(): Address {
@@ -122,6 +122,17 @@ class EstimateFragment : Fragment() {
 
     fun getPickupArgument(): Address {
         return arguments?.getParcelable(EXTRA_PICKUP) ?: throw IllegalArgumentException("Destination argument required")
+    }
+
+    inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            val viewState = viewModel.viewState.get()
+            when (viewState) {
+                EstimateViewModel.ViewState.LOADING -> showLoading()
+                EstimateViewModel.ViewState.ESTIMATE_LOADED -> showEstimates()
+                else -> Unit
+            }
+        }
     }
 
     inner class ScrollListener : RecyclerView.OnScrollListener() {

@@ -5,23 +5,53 @@ import com.challengefy.base.scheduler.SchedulerManager
 import com.challengefy.data.model.Address
 import com.challengefy.data.model.Estimate
 import com.challengefy.data.repository.RideRepository
-import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import javax.inject.Named
 
 class EstimateViewModel @Inject constructor(
-        @Named("pickup") private val pickup: Address,
-        @Named("destination") private val destination: Address,
+        @Named("pickup") pickup: Address,
+        @Named("destination") destination: Address,
+        private val homeViewModel: HomeViewModel,
         private val rideRepository: RideRepository,
         private val schedulerManager: SchedulerManager
 ) {
 
+    val pickup = ObservableField<Address>(pickup)
+    val destination = ObservableField<Address>(destination)
+    val estimates = ObservableField<List<Estimate>>(emptyList())
     val itemSelected = ObservableField<Int>()
+    val viewState = ObservableField<ViewState>(ViewState.IDLE)
 
-    fun estimate(): Single<List<Estimate>> {
-        return rideRepository.estimateRide(pickup, destination)
+    private val disposables = CompositeDisposable()
+
+    fun init() {
+        requestEstimates()
+    }
+
+    fun dispose() {
+        disposables.clear()
+    }
+
+    private fun requestEstimates() {
+        rideRepository.estimateRide(pickup.get(), destination.get())
+                .doOnSubscribe { viewState.set(ViewState.LOADING) }
                 .subscribeOn(schedulerManager.ioThread())
                 .observeOn(schedulerManager.mainThread())
+                .subscribe(
+                        {
+                            estimatesLoaded(it)
+                        },
+                        {
+
+                        }
+                )
+                .apply { disposables.add(this) }
+    }
+
+    private fun estimatesLoaded(it: List<Estimate>?) {
+        viewState.set(ViewState.ESTIMATE_LOADED)
+        estimates.set(it)
     }
 
     fun itemSelected(selectedPos: Int) {
@@ -29,7 +59,12 @@ class EstimateViewModel @Inject constructor(
     }
 
     fun onConfirmClick() {
+        val estimateList = estimates.get()
+        homeViewModel.estimatedReceived(estimateList[itemSelected.get()])
+    }
 
+    enum class ViewState {
+        IDLE, LOADING, ESTIMATE_LOADED
     }
 
 }
