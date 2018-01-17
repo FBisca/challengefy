@@ -1,40 +1,50 @@
 package com.challengefy.feature.estimate.viewmodel
 
 import android.databinding.ObservableField
+import android.databinding.ObservableInt
 import com.challengefy.base.scheduler.SchedulerManager
-import com.challengefy.data.model.Address
 import com.challengefy.data.model.Estimate
 import com.challengefy.data.repository.RideRepository
+import com.challengefy.feature.estimate.navigator.HomeNavigator
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Named
 
 class EstimateViewModel @Inject constructor(
-        @Named("pickup") pickup: Address,
-        @Named("destination") destination: Address,
+        override val homeNavigator: HomeNavigator,
         private val homeViewModel: HomeViewModel,
         private val rideRepository: RideRepository,
         private val schedulerManager: SchedulerManager
-) {
+) : PickupAware, DestinationAware {
 
-    val pickup = ObservableField<Address>(pickup)
-    val destination = ObservableField<Address>(destination)
-    val estimates = ObservableField<List<Estimate>>(emptyList())
-    val itemSelected = ObservableField<Int>()
+    override val pickUpAddress = homeViewModel.pickUpAddress
+    override val destinationAddress = homeViewModel.destinationAddress
+    val estimate = homeViewModel.estimateSelected
+    val estimates = homeViewModel.estimates
+
+    val itemSelected = ObservableInt()
     val viewState = ObservableField<ViewState>(ViewState.IDLE)
 
     private val disposables = CompositeDisposable()
 
     fun init() {
-        requestEstimates()
+        homeNavigator.attachPickUpListener(this)
+        homeNavigator.attachDestinationListener(this)
+
+        if (estimates.get() == null) {
+            requestEstimates()
+        }
     }
 
     fun dispose() {
+        homeNavigator.detachPickUpListener(this)
+        homeNavigator.detachDestinationListener(this)
+
         disposables.clear()
     }
 
     private fun requestEstimates() {
-        rideRepository.estimateRide(pickup.get(), destination.get())
+        rideRepository.estimateRide(pickUpAddress.get(), destinationAddress.get())
                 .doOnSubscribe { viewState.set(ViewState.LOADING) }
                 .subscribeOn(schedulerManager.ioThread())
                 .observeOn(schedulerManager.mainThread())
@@ -43,15 +53,10 @@ class EstimateViewModel @Inject constructor(
                             estimatesLoaded(it)
                         },
                         {
-
+                            Timber.d(it)
                         }
                 )
                 .apply { disposables.add(this) }
-    }
-
-    private fun estimatesLoaded(it: List<Estimate>?) {
-        viewState.set(ViewState.ESTIMATE_LOADED)
-        estimates.set(it)
     }
 
     fun itemSelected(selectedPos: Int) {
@@ -60,7 +65,17 @@ class EstimateViewModel @Inject constructor(
 
     fun onConfirmClick() {
         val estimateList = estimates.get()
-        homeViewModel.estimatedReceived(estimateList[itemSelected.get()])
+        val selectedPos = itemSelected.get()
+
+        if (estimateList != null && estimateList.size > selectedPos) {
+            estimate.set(estimateList[selectedPos])
+            homeViewModel.estimatedReceived()
+        }
+    }
+
+    private fun estimatesLoaded(it: List<Estimate>?) {
+        estimates.set(it)
+        viewState.set(ViewState.ESTIMATE_LOADED)
     }
 
     enum class ViewState {

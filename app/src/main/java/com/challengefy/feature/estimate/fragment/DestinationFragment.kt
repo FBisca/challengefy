@@ -15,13 +15,7 @@ import javax.inject.Inject
 class DestinationFragment : Fragment() {
 
     companion object {
-        const val EXTRA_PICKUP_ADDRESS = "EXTRA_PICKUP_ADDRESS"
-
-        fun newInstance(pickup: Address) = DestinationFragment().apply {
-            val bundle = Bundle()
-            bundle.putParcelable(EXTRA_PICKUP_ADDRESS, pickup)
-            arguments = bundle
-        }
+        fun newInstance() = DestinationFragment()
     }
 
     @Inject
@@ -42,7 +36,6 @@ class DestinationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.pickup = getPickUpAddress()
         binding.viewModel = viewModel
 
         viewModel.init()
@@ -52,7 +45,5 @@ class DestinationFragment : Fragment() {
         super.onDestroyView()
         viewModel.dispose()
     }
-
-    fun getPickUpAddress() = arguments?.getParcelable<Address>(EXTRA_PICKUP_ADDRESS)
 
 }

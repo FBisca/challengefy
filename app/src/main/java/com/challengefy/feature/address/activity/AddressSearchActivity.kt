@@ -106,7 +106,6 @@ class AddressSearchActivity : BaseActivity() {
 
     private fun textChangeEvents(): Observable<String> {
         return binding.addressSearchInpAddress.textChangeEvents()
-                .skipInitialValue()
                 .map { it.text().toString() }
     }
 

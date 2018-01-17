@@ -8,6 +8,6 @@ import retrofit2.http.POST
 
 interface EstimateApi {
 
-    @POST("/api/v2/estimate")
+    @POST("/api/v2/estimateSelected")
     fun estimateRide(@Body body: EstimateRideRequest): Single<List<Estimate>>
 }

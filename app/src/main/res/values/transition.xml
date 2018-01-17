@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="transition_address_search">address_search</string>
+  <string name="transition_pickup">pickup</string>
+  <string name="transition_destination">destination</string>
+  <string name="transition_btn_confirm">btn_confirm</string>
+  <string name="transition_bottom_card">bottom_card</string>
 </resources>

@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import com.challengefy.R
-import com.challengefy.databinding.FragmentFindingLocationBinding
+import com.challengefy.databinding.FragmentPickupBinding
 import com.challengefy.feature.estimate.viewmodel.PickupViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -20,7 +20,7 @@ class PickupFragment : Fragment() {
     @Inject
     lateinit var viewModel: PickupViewModel
 
-    lateinit var binding: FragmentFindingLocationBinding
+    lateinit var binding: FragmentPickupBinding
 
     private val viewStateListener = ViewStateChangeListener()
 
@@ -31,7 +31,7 @@ class PickupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = FragmentFindingLocationBinding.inflate(inflater, container, false)
+        binding = FragmentPickupBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -56,6 +56,7 @@ class PickupFragment : Fragment() {
             pickupCard.visibility = View.VISIBLE
             pickupCard.layoutParams.width = LayoutParams.MATCH_PARENT
 
+            estimateBtnConfirm.visibility = View.GONE
             pickupLoading.visibility = View.GONE
             pickupAddress.visibility = View.VISIBLE
             pickupCardLocationPermission.visibility = View.VISIBLE
@@ -72,12 +73,13 @@ class PickupFragment : Fragment() {
             pickupCard.visibility = View.VISIBLE
             pickupCard.layoutParams.width = LayoutParams.MATCH_PARENT
 
+            estimateBtnConfirm.visibility = View.GONE
             pickupLoading.visibility = View.GONE
             pickupAddress.visibility = View.VISIBLE
             pickupCardLocationPermission.visibility = View.VISIBLE
 
-            pickupTxtLocationTitle.setText(R.string.location_permission_denied)
-            pickupTxtLocationDescription.setText(R.string.location_permission_denied_description)
+            pickupTxtLocationTitle.setText(R.string.location_disabled)
+            pickupTxtLocationDescription.setText(R.string.location_disabled_description)
         }
     }
 
@@ -88,6 +90,7 @@ class PickupFragment : Fragment() {
             pickupCard.visibility = View.VISIBLE
             pickupCard.layoutParams.width = LayoutParams.WRAP_CONTENT
 
+            estimateBtnConfirm.visibility = View.GONE
             pickupLoading.visibility = View.VISIBLE
             pickupAddress.visibility = View.GONE
             pickupCardLocationPermission.visibility = View.GONE
@@ -101,6 +104,7 @@ class PickupFragment : Fragment() {
             pickupCard.visibility = View.VISIBLE
             pickupCard.layoutParams.width = LayoutParams.MATCH_PARENT
 
+            estimateBtnConfirm.visibility = View.VISIBLE
             pickupLoading.visibility = View.GONE
             pickupAddress.visibility = View.VISIBLE
             pickupCardLocationPermission.visibility = View.GONE

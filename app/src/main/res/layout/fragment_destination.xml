@@ -9,9 +9,6 @@
         name="viewModel"
         type="com.challengefy.feature.estimate.viewmodel.DestinationViewModel"/>
 
-    <variable
-        name="pickup"
-        type="com.challengefy.data.model.Address"/>
   </data>
 
   <android.support.constraint.ConstraintLayout
@@ -19,108 +16,50 @@
       android:layout_height="match_parent"
       tools:background="@color/colorPrimary">
 
-    <android.support.v7.widget.CardView
+    <include
         android:id="@+id/estimate_card_pickup"
+        layout="@layout/include_pickup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="32dp"
-        android:alpha="0.9"
-        android:foreground="?selectableItemBackground"
-        android:scaleX="0.95"
-        android:scaleY="0.95"
-        android:translationY="10dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        app:contentPadding="8dp"
+        app:pickUpAware="@{viewModel}"
+        app:layout_constraintBottom_toTopOf="@+id/estimate_card_destination"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/estimate_card_destination">
+        app:layout_constraintStart_toStartOf="parent" />
 
-      <android.support.constraint.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/destination_img_pickup"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:tint="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_location_on_black_24dp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="center_vertical"
-            android:hint="@string/estimate_pickup_hint"
-            android:minHeight="48dp"
-            android:text="@{pickup.title}"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/black_55"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/destination_img_pickup"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-      </android.support.constraint.ConstraintLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <include
         android:id="@+id/estimate_card_destination"
+        layout="@layout/include_destination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?selectableItemBackground"
-        android:onClick="@{() -> viewModel.onDestinationClick()}"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="5dp"
-        app:contentPadding="8dp"
+        app:destinationAware="@{viewModel}"
+        app:layout_constraintBottom_toTopOf="@+id/estimate_btn_confirm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"/>
 
-      <android.support.constraint.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/destination_img_destination"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:tint="@color/colorAccent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_flag_black_24dp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="center_vertical"
-            android:hint="@string/estimate_destination_hint"
-            android:minHeight="48dp"
-            android:text="@{viewModel.destinationAddress.title}"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/black_55"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/destination_img_destination"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-      </android.support.constraint.ConstraintLayout>
-
-    </android.support.v7.widget.CardView>
+    <Button
+        android:id="@+id/estimate_btn_confirm"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:minHeight="56dp"
+        android:enabled="@{viewModel.destinationAddress != null}"
+        android:onClick="@{() -> viewModel.onConfirmClick()}"
+        android:text="Confirm"
+        android:transitionName="@string/transition_btn_confirm"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
   </android.support.constraint.ConstraintLayout>
 

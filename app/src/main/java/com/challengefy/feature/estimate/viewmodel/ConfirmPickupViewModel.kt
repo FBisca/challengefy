@@ -8,7 +8,7 @@ class ConfirmPickupViewModel @Inject constructor(
         private val homeViewModel: HomeViewModel
 ) {
 
-    val pickUp = homeViewModel.pickupAddress
+    val pickUpAddress = homeViewModel.pickUpAddress
 
     fun onConfirmClick() {
         homeViewModel.pickUpConfirmed()

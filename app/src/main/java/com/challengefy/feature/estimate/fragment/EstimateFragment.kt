@@ -26,15 +26,7 @@ import javax.inject.Inject
 class EstimateFragment : Fragment() {
 
     companion object {
-        private const val EXTRA_DESTINATION = "EXTRA_DESTINATION"
-        private const val EXTRA_PICKUP = "EXTRA_PICKUP"
-
-        fun newInstance(pickup: Address, destination: Address) = EstimateFragment().apply {
-            val args = Bundle()
-            args.putParcelable(EXTRA_DESTINATION, destination)
-            args.putParcelable(EXTRA_PICKUP, pickup)
-            arguments = args
-        }
+        fun newInstance() = EstimateFragment()
     }
 
     @Inject
@@ -110,18 +102,11 @@ class EstimateFragment : Fragment() {
                     }
                 })
         )
+
         binding.estimateCardContainer.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
         binding.estimateCardContainer.requestLayout()
         binding.estimateLoading.visibility = View.GONE
         binding.estimateListGroup.visibility = View.VISIBLE
-    }
-
-    fun getDestinationArgument(): Address {
-        return arguments?.getParcelable(EXTRA_DESTINATION) ?: throw IllegalArgumentException("Destination argument required")
-    }
-
-    fun getPickupArgument(): Address {
-        return arguments?.getParcelable(EXTRA_PICKUP) ?: throw IllegalArgumentException("Destination argument required")
     }
 
     inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {

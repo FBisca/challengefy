@@ -6,4 +6,6 @@
   <string name="location_permission_denied">Location permission denied</string>
   <string name="location_permission_denied_description">Without the location permission we won\'t be able to define automatically where you are.\n\nActivate the location for a better experience.</string>
   <string name="activate_location">Activate Location</string>
+  <string name="location_disabled">Location is disabled</string>
+  <string name="location_disabled_description">Without the location enabled we won\'t be able to define automatically where you are.\n\nActivate the location for a better experience.</string>
 </resources>

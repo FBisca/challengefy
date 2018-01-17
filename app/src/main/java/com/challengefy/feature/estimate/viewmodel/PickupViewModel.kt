@@ -1,6 +1,5 @@
 package com.challengefy.feature.estimate.viewmodel
 
-import android.content.Intent
 import android.databinding.ObservableField
 import com.challengefy.base.di.scope.FragmentScope
 import com.challengefy.base.scheduler.SchedulerManager
@@ -9,7 +8,6 @@ import com.challengefy.data.repository.PlaceRepository
 import com.challengefy.data.repository.PositionRepository
 import com.challengefy.data.repository.PositionRepository.LocationState.ACTIVE
 import com.challengefy.data.repository.PositionRepository.LocationState.NO_PERMISSION
-import com.challengefy.feature.address.activity.AddressSearchActivity
 import com.challengefy.feature.estimate.navigator.HomeNavigator
 import com.google.android.gms.common.api.ResolvableApiException
 import io.reactivex.disposables.CompositeDisposable
@@ -18,22 +16,24 @@ import javax.inject.Inject
 
 @FragmentScope
 class PickupViewModel @Inject constructor(
+        override val homeNavigator: HomeNavigator,
         private val homeViewModel: HomeViewModel,
         private val positionRepository: PositionRepository,
         private val placeRepository: PlaceRepository,
-        private val homeNavigator: HomeNavigator,
         private val schedulerManager: SchedulerManager
-) : HomeNavigator.ResolutionListener {
+) : HomeNavigator.ResolutionListener, PickupAware {
+
+    override val pickUpAddress = homeViewModel.pickUpAddress
 
     val viewState: ObservableField<ViewState> = ObservableField(ViewState.IDLE)
-    val pickupAddress: ObservableField<Address> = ObservableField()
 
     private val disposables = CompositeDisposable()
 
     fun init() {
         homeNavigator.attachResultListener(this)
+        homeNavigator.attachPickUpListener(this)
 
-        if (pickupAddress.get() == null) {
+        if (pickUpAddress.get() == null) {
             initLocationState(false)
         } else {
             viewState.notifyChange()
@@ -42,6 +42,7 @@ class PickupViewModel @Inject constructor(
 
     fun dispose() {
         homeNavigator.detachResultListener(this)
+        homeNavigator.detachPickUpListener(this)
 
         disposables.clear()
     }
@@ -55,8 +56,8 @@ class PickupViewModel @Inject constructor(
         }
     }
 
-    fun onPickUpClick() {
-        homeNavigator.goToAddressSearch(pickupAddress.get())
+    fun onConfirmClick() {
+        homeViewModel.pickUpReceived()
     }
 
     override fun onPermissionResult(requestCode: Int, granted: Boolean) {
@@ -67,14 +68,8 @@ class PickupViewModel @Inject constructor(
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int) {
         when (requestCode) {
-            HomeNavigator.REQUEST_CODE_ADDRESS_SEARCH -> {
-                val address = data?.getParcelableExtra<Address>(AddressSearchActivity.RESULT_ADDRESS)
-                if (address != null) {
-                    locationReceived(address)
-                }
-            }
             HomeNavigator.REQUEST_CODE_APP_SETTINGS,
             HomeNavigator.REQUEST_CODE_LOCATION_SETTINGS,
             HomeNavigator.REQUEST_CODE_RESOLUTION -> initLocationState(true)
@@ -123,10 +118,10 @@ class PickupViewModel @Inject constructor(
     }
 
     private fun locationReceived(address: Address) {
-        pickupAddress.set(address)
+        pickUpAddress.set(address)
         viewState.set(ViewState.LOCATION_RECEIVED)
 
-        homeViewModel.pickUpReceived(address)
+        homeViewModel.pickUpReceived()
     }
 
     private fun locationNoPermission(alreadyRequested: Boolean) {

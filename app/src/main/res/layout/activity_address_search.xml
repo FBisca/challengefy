@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?selectableItemBackground"
-        android:transitionName="@string/transition_address_search"
         app:cardElevation="5dp"
         app:contentPadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"

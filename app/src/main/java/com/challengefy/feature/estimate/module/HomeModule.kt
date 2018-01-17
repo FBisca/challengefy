@@ -12,7 +12,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class HomeModule {
 
     @FragmentScope
-    @ContributesAndroidInjector(modules = [EstimateModule::class])
+    @ContributesAndroidInjector
     abstract fun injectorEstimateFragment(): EstimateFragment
 
     @FragmentScope
