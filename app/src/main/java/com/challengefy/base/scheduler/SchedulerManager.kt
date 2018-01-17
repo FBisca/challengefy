@@ -11,6 +11,6 @@ interface SchedulerManager {
 }
 
 class AppSchedulerManager @Inject constructor(): SchedulerManager {
-    override fun mainThread() = AndroidSchedulers.mainThread()
-    override fun ioThread() = Schedulers.io()
+    override fun mainThread(): Scheduler = AndroidSchedulers.mainThread()
+    override fun ioThread(): Scheduler = Schedulers.io()
 }

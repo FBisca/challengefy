@@ -46,9 +46,6 @@
         android:id="@+id/estimate_card_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:transitionName="@string/transition_bottom_card"
         app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,6 +63,13 @@
             android:visibility="gone"
             app:constraint_referenced_ids="estimate_list, estimate_txt_car_title, estimate_btn_request"
             tools:visibility="visible"/>
+
+        <android.support.constraint.Group
+            android:id="@+id/estimate_error_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="estimate_error_bg, estimate_error, estimate_btn_try_again, estimate_txt_error"/>
 
         <TextView
             android:id="@+id/estimate_txt_car_title"
@@ -95,12 +99,14 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
             android:minHeight="56dp"
             android:onClick="@{() -> viewModel.onConfirmClick()}"
             android:text="Confirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/estimate_list"/>
+            app:layout_constraintTop_toBottomOf="@+id/estimate_list"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/estimate_loading"
@@ -113,6 +119,58 @@
             app:lottie_autoPlay="true"
             app:lottie_fileName="lottiefiles/loader.json"
             app:lottie_loop="true"/>
+
+        <View
+            android:id="@+id/estimate_error_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_estimate_icon"
+            app:layout_constraintStart_toStartOf="@+id/estimate_error"
+            app:layout_constraintEnd_toEndOf="@+id/estimate_error"
+            app:layout_constraintTop_toTopOf="@+id/estimate_error"
+            app:layout_constraintBottom_toBottomOf="@+id/estimate_error"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/estimate_error"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="lottiefiles/error.json"
+            app:lottie_loop="true"/>
+
+        <TextView
+            android:id="@+id/estimate_txt_error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Something bad happened.\nOur humble apologies for it."
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/black_85"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/estimate_error"/>
+
+        <Button
+            android:id="@+id/estimate_btn_try_again"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:minHeight="56dp"
+            android:onClick="@{() -> viewModel.onTryAgainClick()}"
+            android:text="Try Again"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/estimate_txt_error"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
       </android.support.constraint.ConstraintLayout>
 

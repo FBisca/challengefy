@@ -4,8 +4,6 @@ import android.content.Context
 import android.databinding.Observable
 import android.os.Bundle
 import android.support.transition.AutoTransition
-import android.support.transition.Transition
-import android.support.transition.TransitionListenerAdapter
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -15,7 +13,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.challengefy.data.model.Address
 import com.challengefy.databinding.FragmentEstimateBinding
 import com.challengefy.feature.estimate.adapter.EstimateAdapter
 import com.challengefy.feature.estimate.adapter.EstimateMarginDecoration
@@ -75,38 +72,39 @@ class EstimateFragment : Fragment() {
     }
 
     private fun showLoading() {
-        TransitionManager.beginDelayedTransition(binding.root as ViewGroup, AutoTransition()
-                .addTarget(binding.estimateCardContainer)
-                .addTarget(binding.estimateLoading)
-                .addTarget(binding.estimateList)
-                .addTarget(binding.estimateTxtCarTitle)
-                .addTarget(binding.estimateBtnRequest)
-        )
+        TransitionManager.beginDelayedTransition(binding.root as ViewGroup, createTransition())
 
-        binding.estimateCardContainer.layoutParams.width = (130 * resources.displayMetrics.density).toInt()
         binding.estimateListGroup.visibility = View.GONE
         binding.estimateLoading.visibility = View.VISIBLE
+        binding.estimateErrorGroup.visibility = View.GONE
     }
 
     private fun showEstimates() {
-        TransitionManager.beginDelayedTransition(binding.estimateCardContainer, AutoTransition()
-                .addTarget(binding.estimateCardContainer)
-                .addTarget(binding.estimateList)
-                .addTarget(binding.estimateLoading)
-                .addTarget(binding.estimateTxtCarTitle)
-                .addTarget(binding.estimateBtnRequest)
-                .addListener(object: TransitionListenerAdapter() {
-                    override fun onTransitionEnd(transition: Transition) {
-                        val manager = binding.estimateList.layoutManager as LinearLayoutManager
-                        manager.scrollToPositionWithOffset(0, 0)
-                    }
-                })
-        )
+        TransitionManager.beginDelayedTransition(binding.root as ViewGroup, createTransition())
 
-        binding.estimateCardContainer.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-        binding.estimateCardContainer.requestLayout()
         binding.estimateLoading.visibility = View.GONE
         binding.estimateListGroup.visibility = View.VISIBLE
+        binding.estimateErrorGroup.visibility = View.GONE
+    }
+
+    private fun showError() {
+        TransitionManager.beginDelayedTransition(binding.root as ViewGroup, createTransition())
+
+        binding.estimateListGroup.visibility = View.GONE
+        binding.estimateLoading.visibility = View.GONE
+        binding.estimateErrorGroup.visibility = View.VISIBLE
+    }
+
+    private fun createTransition() = AutoTransition().apply {
+            addTarget(binding.estimateCardContainer)
+            addTarget(binding.estimateLoading)
+            addTarget(binding.estimateList)
+            addTarget(binding.estimateTxtCarTitle)
+            addTarget(binding.estimateBtnRequest)
+            addTarget(binding.estimateErrorBg)
+            addTarget(binding.estimateError)
+            addTarget(binding.estimateBtnTryAgain)
+            addTarget(binding.estimateTxtError)
     }
 
     inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {
@@ -115,9 +113,11 @@ class EstimateFragment : Fragment() {
             when (viewState) {
                 EstimateViewModel.ViewState.LOADING -> showLoading()
                 EstimateViewModel.ViewState.ESTIMATE_LOADED -> showEstimates()
+                EstimateViewModel.ViewState.ERROR -> showError()
                 else -> Unit
             }
         }
+
     }
 
     inner class ScrollListener : RecyclerView.OnScrollListener() {

@@ -65,6 +65,11 @@ class HomeViewModel @Inject constructor(
 
     inner class AddressChangeListener : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            val value = estimates.get()
+            if (value == null) {
+                estimates.notifyChange()
+            }
+
             estimates.set(null)
         }
     }

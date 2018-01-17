@@ -1,13 +1,16 @@
 package com.challengefy.feature.estimate.viewmodel
 
+import android.databinding.Observable
 import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import com.challengefy.base.scheduler.SchedulerManager
 import com.challengefy.data.model.Estimate
 import com.challengefy.data.repository.RideRepository
 import com.challengefy.feature.estimate.navigator.HomeNavigator
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class EstimateViewModel @Inject constructor(
@@ -26,37 +29,26 @@ class EstimateViewModel @Inject constructor(
     val viewState = ObservableField<ViewState>(ViewState.IDLE)
 
     private val disposables = CompositeDisposable()
+    private val estimatesChangeListener = EstimatesChangeListener()
 
     fun init() {
         homeNavigator.attachPickUpListener(this)
         homeNavigator.attachDestinationListener(this)
 
-        if (estimates.get() == null) {
-            requestEstimates()
+        if (viewState.get() == ViewState.ESTIMATE_LOADED) {
+            viewState.notifyChange()
         }
+
+        estimates.addOnPropertyChangedCallback(estimatesChangeListener)
+        estimatesChangeListener.onPropertyChanged(estimates, 0)
     }
 
     fun dispose() {
         homeNavigator.detachPickUpListener(this)
         homeNavigator.detachDestinationListener(this)
 
+        estimates.removeOnPropertyChangedCallback(estimatesChangeListener)
         disposables.clear()
-    }
-
-    private fun requestEstimates() {
-        rideRepository.estimateRide(pickUpAddress.get(), destinationAddress.get())
-                .doOnSubscribe { viewState.set(ViewState.LOADING) }
-                .subscribeOn(schedulerManager.ioThread())
-                .observeOn(schedulerManager.mainThread())
-                .subscribe(
-                        {
-                            estimatesLoaded(it)
-                        },
-                        {
-                            Timber.d(it)
-                        }
-                )
-                .apply { disposables.add(this) }
     }
 
     fun itemSelected(selectedPos: Int) {
@@ -73,13 +65,47 @@ class EstimateViewModel @Inject constructor(
         }
     }
 
+    fun onTryAgainClick() {
+        requestEstimates()
+    }
+
+    private fun requestEstimates() {
+        rideRepository.estimateRide(pickUpAddress.get(), destinationAddress.get())
+                .onErrorResumeNext { createDelayedError(it) }
+                .subscribeOn(schedulerManager.ioThread())
+                .observeOn(schedulerManager.mainThread())
+                .doOnSubscribe { viewState.set(ViewState.LOADING) }
+                .subscribe(
+                        {
+                            estimatesLoaded(it)
+                        },
+                        {
+                            Timber.d(it)
+                            viewState.set(ViewState.ERROR)
+                        }
+                )
+                .apply { disposables.add(this) }
+    }
+
     private fun estimatesLoaded(it: List<Estimate>?) {
         estimates.set(it)
-        viewState.set(ViewState.ESTIMATE_LOADED)
     }
+
+    private fun createDelayedError(error: Throwable) = Single.just(1)
+            .delay(1000, TimeUnit.MILLISECONDS)
+            .flatMap { Single.error<List<Estimate>>(error) }
 
     enum class ViewState {
-        IDLE, LOADING, ESTIMATE_LOADED
+        IDLE, LOADING, ESTIMATE_LOADED, ERROR
     }
 
+    inner class EstimatesChangeListener : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable, propertyId: Int) {
+            if (estimates.get() == null) {
+                requestEstimates()
+            } else {
+                viewState.set(ViewState.ESTIMATE_LOADED)
+            }
+        }
+    }
 }

@@ -2,7 +2,6 @@ package com.challengefy
 
 import android.app.Activity
 import android.app.Application
-import android.os.Build
 import com.challengefy.base.di.component.DaggerApplicationComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector

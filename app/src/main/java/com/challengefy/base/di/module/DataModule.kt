@@ -16,5 +16,4 @@ abstract class DataModule {
 
     @Binds
     abstract fun bindsSchedulerManager(schedulerManager: AppSchedulerManager): SchedulerManager
-
 }
