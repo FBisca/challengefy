@@ -13,6 +13,10 @@ import javax.inject.Inject
 
 class LookingForCarFragment : Fragment() {
 
+    companion object {
+        fun newInstance() = LookingForCarFragment()
+    }
+
     @Inject
     lateinit var viewModel: LookingForCarViewModel
 

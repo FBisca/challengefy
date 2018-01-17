@@ -2,6 +2,7 @@ package com.challengefy.feature.estimate.fragment
 
 import android.content.Context
 import android.databinding.Observable
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
@@ -10,19 +11,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import com.challengefy.R
+import com.challengefy.base.util.boundsChangeEvents
 import com.challengefy.databinding.FragmentPickupBinding
+import com.challengefy.feature.estimate.bindings.MapPaddingBinding
 import com.challengefy.feature.estimate.viewmodel.PickupViewModel
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.disposables.Disposables
+import timber.log.Timber
 import javax.inject.Inject
 
 class PickupFragment : Fragment() {
 
+    companion object {
+        fun newInstance() = PickupFragment()
+    }
+
     @Inject
     lateinit var viewModel: PickupViewModel
 
-    lateinit var binding: FragmentPickupBinding
+    @Inject
+    lateinit var mapPaddingBinding: MapPaddingBinding
 
+    lateinit var binding: FragmentPickupBinding
     private val viewStateListener = ViewStateChangeListener()
+    private var paddingDisposable = Disposables.empty()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -37,6 +49,7 @@ class PickupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindPaddingChange()
         binding.viewModel = viewModel
 
         viewModel.viewState.addOnPropertyChangedCallback(viewStateListener)
@@ -45,6 +58,7 @@ class PickupFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        paddingDisposable.dispose()
         viewModel.viewState.removeOnPropertyChangedCallback(viewStateListener)
         viewModel.dispose()
     }
@@ -109,6 +123,15 @@ class PickupFragment : Fragment() {
             pickupAddress.visibility = View.VISIBLE
             pickupCardLocationPermission.visibility = View.GONE
         }
+    }
+
+    private fun bindPaddingChange() {
+        paddingDisposable = binding.pickupCard.boundsChangeEvents()
+                .map { rect -> Rect(0, 0, 0, binding.root.height - rect.top) }
+                .subscribe(
+                        { mapPaddingBinding.postPaddingChange(it) },
+                        { Timber.e(it) }
+                )
     }
 
     inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {

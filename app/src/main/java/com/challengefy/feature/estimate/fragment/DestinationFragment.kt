@@ -1,15 +1,19 @@
 package com.challengefy.feature.estimate.fragment
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.challengefy.data.model.Address
+import com.challengefy.base.util.boundsChangeEvents
 import com.challengefy.databinding.FragmentDestinationBinding
+import com.challengefy.feature.estimate.bindings.MapPaddingBinding
 import com.challengefy.feature.estimate.viewmodel.DestinationViewModel
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.disposables.Disposables
+import timber.log.Timber
 import javax.inject.Inject
 
 class DestinationFragment : Fragment() {
@@ -21,7 +25,12 @@ class DestinationFragment : Fragment() {
     @Inject
     lateinit var viewModel: DestinationViewModel
 
+    @Inject
+    lateinit var mapPaddingBinding: MapPaddingBinding
+
     private lateinit var binding: FragmentDestinationBinding
+
+    private var paddingDisposable = Disposables.empty()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -36,6 +45,7 @@ class DestinationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindPaddingChange()
         binding.viewModel = viewModel
 
         viewModel.init()
@@ -43,7 +53,20 @@ class DestinationFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        paddingDisposable.dispose()
         viewModel.dispose()
+    }
+
+    private fun bindPaddingChange() {
+        val view = binding.estimateCardPickup?.estimateCardPickup
+        if (view != null) {
+            paddingDisposable = view.boundsChangeEvents()
+                    .map { Rect(0, 0, 0, binding.root.height - it.top) }
+                    .subscribe(
+                            { mapPaddingBinding.postPaddingChange(it) },
+                            { Timber.e(it) }
+                    )
+        }
     }
 
 }

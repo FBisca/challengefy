@@ -89,8 +89,8 @@ class EstimateViewModel @Inject constructor(
                 .apply { disposables.add(this) }
     }
 
-    private fun estimatesLoaded(it: List<Estimate>?) {
-        estimates.set(it)
+    private fun estimatesLoaded(result: List<Estimate>) {
+        estimates.set(result)
     }
 
     private fun createDelayedError(error: Throwable) = Single.just(1)

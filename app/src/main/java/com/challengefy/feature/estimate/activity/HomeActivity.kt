@@ -42,7 +42,7 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
     lateinit var homeNavigator: HomeNavigator
 
     private val mapFragment = MapFragment.newInstance()
-    private val pickupFragment = PickupFragment()
+    private val pickupFragment = PickupFragment.newInstance()
 
     private val viewStateListener = ViewStateChangeListener()
 

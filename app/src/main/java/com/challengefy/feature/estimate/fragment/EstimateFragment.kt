@@ -2,6 +2,7 @@ package com.challengefy.feature.estimate.fragment
 
 import android.content.Context
 import android.databinding.Observable
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.transition.AutoTransition
 import android.support.transition.TransitionManager
@@ -13,11 +14,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.challengefy.base.util.boundsChangeEvents
 import com.challengefy.databinding.FragmentEstimateBinding
 import com.challengefy.feature.estimate.adapter.EstimateAdapter
 import com.challengefy.feature.estimate.adapter.EstimateMarginDecoration
+import com.challengefy.feature.estimate.bindings.MapPaddingBinding
 import com.challengefy.feature.estimate.viewmodel.EstimateViewModel
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.disposables.Disposables
+import io.reactivex.functions.BiFunction
+import timber.log.Timber
 import javax.inject.Inject
 
 class EstimateFragment : Fragment() {
@@ -29,9 +35,13 @@ class EstimateFragment : Fragment() {
     @Inject
     lateinit var viewModel: EstimateViewModel
 
+    @Inject
+    lateinit var mapPaddingBinding: MapPaddingBinding
+
     private lateinit var binding: FragmentEstimateBinding
     private val adapter = EstimateAdapter()
     private val viewStateListener = ViewStateChangeListener()
+    private var paddingDisposable = Disposables.empty()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -46,6 +56,7 @@ class EstimateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindPaddingChange()
         viewModel.viewState.addOnPropertyChangedCallback(viewStateListener)
 
         initView()
@@ -56,6 +67,7 @@ class EstimateFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        paddingDisposable.dispose()
         viewModel.viewState.removeOnPropertyChangedCallback(viewStateListener)
         viewModel.dispose()
     }
@@ -105,6 +117,20 @@ class EstimateFragment : Fragment() {
             addTarget(binding.estimateError)
             addTarget(binding.estimateBtnTryAgain)
             addTarget(binding.estimateTxtError)
+    }
+
+    private fun bindPaddingChange() {
+        val destinationView = binding.estimateCardDestination?.root
+        if (destinationView != null) {
+            paddingDisposable = destinationView.boundsChangeEvents()
+                    .zipWith(binding.estimateCardContainer.boundsChangeEvents(), BiFunction<Rect, Rect, Rect> { destination, card ->
+                        Rect(0, destination.bottom, 0, binding.root.height - card.top)
+                    })
+                    .subscribe(
+                            { mapPaddingBinding.postPaddingChange(it) },
+                            { Timber.e(it) }
+                    )
+        }
     }
 
     inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {

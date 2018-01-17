@@ -8,6 +8,7 @@ import com.challengefy.data.repository.PlaceRepository
 import com.challengefy.data.repository.PositionRepository
 import com.challengefy.data.repository.PositionRepository.LocationState.ACTIVE
 import com.challengefy.data.repository.PositionRepository.LocationState.NO_PERMISSION
+import com.challengefy.feature.estimate.bindings.MapPaddingBinding
 import com.challengefy.feature.estimate.bindings.PickupAware
 import com.challengefy.feature.estimate.navigator.HomeNavigator
 import com.google.android.gms.common.api.ResolvableApiException
