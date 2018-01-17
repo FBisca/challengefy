@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.transition.AutoTransition
 import android.support.transition.TransitionManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -125,13 +126,17 @@ class AddressSearchActivity : BaseActivity() {
     }
 
     private fun showLoading() {
-        TransitionManager.beginDelayedTransition(binding.root as ViewGroup)
+        TransitionManager.beginDelayedTransition(binding.root as ViewGroup, AutoTransition()
+                .addTarget(binding.addressSearchLoading)
+        )
 
         binding.addressSearchLoading.visibility = View.VISIBLE
     }
 
     private fun hideLoading() {
-        TransitionManager.beginDelayedTransition(binding.root as ViewGroup)
+        TransitionManager.beginDelayedTransition(binding.root as ViewGroup, AutoTransition()
+                .addTarget(binding.addressSearchLoading)
+        )
 
         binding.addressSearchLoading.visibility = View.GONE
     }

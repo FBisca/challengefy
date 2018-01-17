@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.transition.AutoTransition
 import android.support.transition.Fade
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
 import com.challengefy.feature.estimate.fragment.ConfirmPickupFragment
@@ -179,7 +180,6 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
         supportFragmentManager.beginTransaction()
                 .addSharedElement(findViewById(R.id.estimate_card_pickup), getString(R.string.transition_pickup))
-                .addSharedElement(findViewById(R.id.estimate_card_container), getString(R.string.transition_bottom_card))
                 .replace(R.id.estimate_container_content, fragment)
                 .addToBackStack(null)
                 .commit()

@@ -1,15 +1,16 @@
 package com.challengefy.feature.map.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.databinding.Observable
 import android.os.Bundle
+import android.util.SparseArray
 import com.challengefy.R
 import com.challengefy.feature.estimate.bindings.MapPaddingBinding
+import com.challengefy.feature.map.viewmodel.MapViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.*
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Maybe
 import io.reactivex.disposables.Disposables
@@ -25,11 +26,16 @@ class MapFragment : SupportMapFragment() {
     }
 
     @Inject
+    lateinit var viewModel: MapViewModel
+
+    @Inject
     lateinit var mapBinding: MapPaddingBinding
 
-    private var mapState = MapState.IDLE
-
     private var paddingDisposable = Disposables.empty()
+
+    private val viewStateChangeListener = ViewStateChangeListener()
+
+    private val markers = SparseArray<Marker>()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -45,11 +51,17 @@ class MapFragment : SupportMapFragment() {
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
+        viewModel.init()
+        viewModel.viewState.addOnPropertyChangedCallback(viewStateChangeListener)
+
         bindPaddingChangeEvents()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.dispose()
+        viewModel.viewState.removeOnPropertyChangedCallback(viewStateChangeListener)
+
         paddingDisposable.dispose()
     }
 
@@ -65,19 +77,6 @@ class MapFragment : SupportMapFragment() {
                         })
     }
 
-    fun centerMap(latitude: Double, longitude: Double) {
-        getMapAsync {
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM)
-
-            if (mapState == MapState.IDLE) {
-                it.moveCamera(cameraUpdate)
-                mapState = MapState.CENTERED
-            } else {
-                it.animateCamera(cameraUpdate)
-            }
-        }
-    }
-
     private fun getMap(): Maybe<GoogleMap> {
         return Maybe.create { emitter ->
             getMapAsync {
@@ -90,15 +89,55 @@ class MapFragment : SupportMapFragment() {
         }
     }
 
-    private enum class MapState {
-        IDLE, CENTERED
+    private fun showDestination() {
+        viewModel.destinationAddress.get()?.let {
+            centerMap(it.position.latitude, it.position.longitude, true)
+            addMarker(it.position.latitude, it.position.longitude, R.drawable.destination_marker)
+        }
     }
 
-    @SuppressLint("MissingPermission")
-    fun enableCurrentLocation() {
-        getMapAsync {
-            it.isMyLocationEnabled = true
-            it.uiSettings.isMyLocationButtonEnabled = false
+    private fun showPickup() {
+        viewModel.pickUpAddress.get()?.let {
+            centerMap(it.position.latitude, it.position.longitude, false)
+            addMarker(it.position.latitude, it.position.longitude, R.drawable.pickup_marker)
         }
+    }
+
+    private fun addMarker(latitude: Double, longitude: Double, res: Int) {
+        getMapAsync {
+            val oldMarker = markers[res]
+            oldMarker?.remove()
+
+            val marker = it.addMarker(MarkerOptions()
+                    .position(LatLng(latitude, longitude))
+                    .icon(BitmapDescriptorFactory.fromResource(res))
+            )
+
+            markers.put(res, marker)
+        }
+    }
+
+    private fun centerMap(latitude: Double, longitude: Double, animate: Boolean) {
+        getMapAsync {
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM)
+
+            if (animate) {
+                it.animateCamera(cameraUpdate)
+            } else {
+                it.moveCamera(cameraUpdate)
+            }
+        }
+    }
+
+    inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            val viewState = viewModel.viewState.get()
+            when (viewState) {
+                MapViewModel.ViewState.SHOW_DESTINATION -> showDestination()
+                MapViewModel.ViewState.SHOW_PICKUP -> showPickup()
+                else -> Unit
+            }
+        }
+
     }
 }
