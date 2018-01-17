@@ -6,6 +6,8 @@ import android.databinding.ObservableInt
 import com.challengefy.base.scheduler.SchedulerManager
 import com.challengefy.data.model.Estimate
 import com.challengefy.data.repository.RideRepository
+import com.challengefy.feature.estimate.bindings.DestinationAware
+import com.challengefy.feature.estimate.bindings.PickupAware
 import com.challengefy.feature.estimate.navigator.HomeNavigator
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable

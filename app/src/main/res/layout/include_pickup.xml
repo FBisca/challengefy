@@ -5,7 +5,7 @@
   <data>
     <variable
         name="pickUpAware"
-        type="com.challengefy.feature.estimate.viewmodel.PickupAware"/>
+        type="com.challengefy.feature.estimate.bindings.PickupAware"/>
   </data>
 
   <android.support.v7.widget.CardView

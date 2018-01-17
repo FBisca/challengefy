@@ -13,6 +13,9 @@ class App : Application(), HasActivityInjector {
     @Inject
     lateinit var activityInjector : DispatchingAndroidInjector<Activity>
 
+    @Inject
+    lateinit var loggingTree: Timber.Tree
+
     override fun onCreate() {
         super.onCreate()
 
@@ -21,9 +24,7 @@ class App : Application(), HasActivityInjector {
     }
 
     private fun initializeLogger() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(loggingTree)
     }
 
     private fun initializeDagger() {

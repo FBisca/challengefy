@@ -1,6 +1,8 @@
 package com.challengefy.feature.estimate.viewmodel
 
 import com.challengefy.base.di.scope.FragmentScope
+import com.challengefy.feature.estimate.bindings.DestinationAware
+import com.challengefy.feature.estimate.bindings.PickupAware
 import com.challengefy.feature.estimate.navigator.HomeNavigator
 import javax.inject.Inject
 
