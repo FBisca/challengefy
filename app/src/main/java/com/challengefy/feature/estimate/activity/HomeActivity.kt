@@ -10,12 +10,14 @@ import android.support.v4.app.Fragment
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
 import com.challengefy.data.model.Address
+import com.challengefy.feature.estimate.fragment.ConfirmPickupFragment
 import com.challengefy.feature.estimate.fragment.DestinationFragment
 import com.challengefy.feature.estimate.fragment.EstimateFragment
 import com.challengefy.feature.estimate.fragment.PickupFragment
 import com.challengefy.feature.estimate.navigator.HomeNavigator
 import com.challengefy.feature.estimate.viewmodel.HomeViewModel
 import com.challengefy.feature.map.fragment.MapFragment
+import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -41,7 +43,9 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
     private val viewStateListener = ViewStateChangeListener()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_home)
 
         initMapFragment()
@@ -79,16 +83,23 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
                 .commit()
     }
 
-    private fun initDestinationFragment(pickUpAddress: Address) {
+    private fun showDestinationFragment(pickUpAddress: Address) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.estimate_container_content, DestinationFragment.newInstance(pickUpAddress))
                 .addToBackStack(null)
                 .commit()
     }
 
-    private fun initEstimateFragment(pickupAddress: Address, destinationAddress: Address) {
+    private fun showEstimateFragment(pickUpAddress: Address, destinationAddress: Address) {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.estimate_container_content, EstimateFragment.newInstance(pickupAddress, destinationAddress))
+                .replace(R.id.estimate_container_content, EstimateFragment.newInstance(pickUpAddress, destinationAddress))
+                .addToBackStack(null)
+                .commit()
+    }
+
+    private fun showConfirmPickupFragment() {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.estimate_container_content, ConfirmPickupFragment.newInstance())
                 .addToBackStack(null)
                 .commit()
     }
@@ -97,11 +108,11 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
         override fun onPropertyChanged(sender: Observable, propertyId: Int) {
             val viewState = viewModel.viewState.get()
             when (viewState) {
-                HomeViewModel.ViewState.DESTINATION -> initDestinationFragment(viewModel.pickupAddress.get())
-                HomeViewModel.ViewState.ESTIMATE -> initEstimateFragment(viewModel.pickupAddress.get(), viewModel.destinationAddress.get())
+                HomeViewModel.ViewState.DESTINATION -> showDestinationFragment(viewModel.pickupAddress.get())
+                HomeViewModel.ViewState.ESTIMATE -> showEstimateFragment(viewModel.pickupAddress.get(), viewModel.destinationAddress.get())
+                HomeViewModel.ViewState.CONFIRM_PICKUP -> showConfirmPickupFragment()
                 else -> Unit // Do Nothing
             }
         }
-
     }
 }

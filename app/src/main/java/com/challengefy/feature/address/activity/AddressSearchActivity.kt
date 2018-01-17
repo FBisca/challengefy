@@ -15,6 +15,7 @@ import com.challengefy.databinding.ActivityAddressSearchBinding
 import com.challengefy.feature.address.adapter.AddressSearchAdapter
 import com.challengefy.feature.address.viewmodel.AddressSearchViewModel
 import com.jakewharton.rxbinding2.widget.textChangeEvents
+import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -41,6 +42,7 @@ class AddressSearchActivity : BaseActivity() {
     private lateinit var binding: ActivityAddressSearchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_address_search)
         initViews()

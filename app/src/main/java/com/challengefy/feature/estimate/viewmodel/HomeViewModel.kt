@@ -35,6 +35,10 @@ class HomeViewModel @Inject constructor(
         updateViewState(ViewState.CONFIRM_PICKUP)
     }
 
+    fun pickUpConfirmed() {
+
+    }
+
     private fun updateViewState(newState: ViewState) {
         if (newState != viewState.get()) {
             viewState.set(newState)

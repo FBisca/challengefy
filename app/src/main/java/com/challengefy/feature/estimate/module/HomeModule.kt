@@ -2,10 +2,8 @@ package com.challengefy.feature.estimate.module
 
 import com.challengefy.base.di.scope.ActivityScope
 import com.challengefy.base.di.scope.FragmentScope
-import com.challengefy.feature.estimate.fragment.DestinationFragment
-import com.challengefy.feature.estimate.fragment.EstimateFragment
-import com.challengefy.feature.estimate.fragment.LookingForCarFragment
-import com.challengefy.feature.estimate.fragment.PickupFragment
+import com.challengefy.feature.estimate.fragment.*
+import com.challengefy.feature.map.fragment.MapFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -18,15 +16,23 @@ abstract class HomeModule {
     abstract fun injectorEstimateFragment(): EstimateFragment
 
     @FragmentScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     abstract fun injectorPickupFragment(): PickupFragment
 
     @FragmentScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
     abstract fun injectorDestinationFragment(): DestinationFragment
 
     @FragmentScope
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector
+    abstract fun injectorConfirmPickupFragment(): ConfirmPickupFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
     abstract fun injectorLookingForCarFragment(): LookingForCarFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    abstract fun injectorMapFragment(): MapFragment
 
 }
