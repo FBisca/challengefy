@@ -9,9 +9,7 @@ import com.challengefy.data.repository.PositionRepository
 import javax.inject.Inject
 
 @ActivityScope
-class HomeViewModel @Inject constructor(
-        private val positionRepository: PositionRepository
-) {
+class HomeViewModel @Inject constructor() {
 
     val viewState: ObservableField<ViewState> = ObservableField(ViewState.PICKUP)
 
@@ -31,8 +29,6 @@ class HomeViewModel @Inject constructor(
         pickUpAddress.removeOnPropertyChangedCallback(addressChangeListener)
         destinationAddress.removeOnPropertyChangedCallback(addressChangeListener)
     }
-
-    fun location() = positionRepository.getCurrentPosition()
 
     fun onBack() {
         val state = viewState.get()

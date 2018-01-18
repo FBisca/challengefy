@@ -1,6 +1,5 @@
 package com.challengefy.data.repository
 
-import com.challengefy.data.model.Position
 import com.challengefy.data.source.location.PositionSource
 import com.google.android.gms.location.LocationRequest
 import io.reactivex.Single
@@ -13,11 +12,6 @@ class PositionRepositoryImpl @Inject constructor(
     private val locationRequest = LocationRequest().apply {
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         interval = 1000
-    }
-
-    override fun getCurrentPosition(): Single<Position> {
-        return positionSource.positionUpdates(locationRequest)
-                .firstOrError()
     }
 
     override fun isLocationEnabled(): Single<Boolean> {
