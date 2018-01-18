@@ -6,7 +6,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.challengefy.R
 
-class EstimateMarginDecoration(context: Context) : RecyclerView.ItemDecoration() {
+class EstimateMarginDecoration(
+        context: Context,
+        private val rootView: View
+) : RecyclerView.ItemDecoration() {
 
     private val viewSize: Int = context.resources.getDimension(R.dimen.estimate_view_width).toInt()
 
@@ -14,11 +17,11 @@ class EstimateMarginDecoration(context: Context) : RecyclerView.ItemDecoration()
         val pos = parent.getChildAdapterPosition(view)
         val itemCount = state.itemCount
         if (pos == 0) {
-            outRect.left = (parent.width / 2) - (viewSize / 2)
+            outRect.left = (rootView.width / 2) - (viewSize / 2)
         }
 
         if (pos == itemCount - 1) {
-            outRect.right = (parent.width / 2) - (viewSize / 2)
+            outRect.right = (rootView.width / 2) - (viewSize / 2)
         }
     }
 }

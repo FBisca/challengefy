@@ -7,6 +7,7 @@ import android.util.SparseArray
 import com.challengefy.R
 import com.challengefy.feature.estimate.bindings.MapPaddingBinding
 import com.challengefy.feature.map.viewmodel.MapViewModel
+import com.challengefy.feature.map.viewmodel.MapViewModel.ViewState.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -36,6 +37,8 @@ class MapFragment : SupportMapFragment() {
     private val viewStateChangeListener = ViewStateChangeListener()
 
     private val markers = SparseArray<Marker>()
+
+    private var hasMoved = false
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -67,38 +70,27 @@ class MapFragment : SupportMapFragment() {
 
     private fun bindPaddingChangeEvents() {
         paddingDisposable = mapBinding.paddingChangeEvents()
-                .flatMapMaybe { padding -> getMap().map { it to padding } }
+                .flatMapMaybe { padding -> getMapEmitter().map { it to padding } }
                 .subscribe(
                         { (map, padding) ->
                             map.setPadding(padding.left, padding.top, padding.right, padding.bottom)
+                            checkMapState()
                         },
                         {
                             Timber.e(it)
                         })
     }
 
-    private fun getMap(): Maybe<GoogleMap> {
-        return Maybe.create { emitter ->
-            getMapAsync {
-                if (it != null) {
-                    emitter.onSuccess(it)
-                } else {
-                    emitter.onComplete()
-                }
-            }
-        }
-    }
-
     private fun showDestination() {
         viewModel.destinationAddress.get()?.let {
-            centerMap(it.position.latitude, it.position.longitude, true)
+            centerMap(it.position.latitude, it.position.longitude)
             addMarker(it.position.latitude, it.position.longitude, R.drawable.destination_marker)
         }
     }
 
     private fun showPickup() {
         viewModel.pickUpAddress.get()?.let {
-            centerMap(it.position.latitude, it.position.longitude, false)
+            centerMap(it.position.latitude, it.position.longitude)
             addMarker(it.position.latitude, it.position.longitude, R.drawable.pickup_marker)
         }
     }
@@ -117,26 +109,43 @@ class MapFragment : SupportMapFragment() {
         }
     }
 
-    private fun centerMap(latitude: Double, longitude: Double, animate: Boolean) {
+    private fun centerMap(latitude: Double, longitude: Double) {
         getMapAsync {
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), DEFAULT_ZOOM)
 
-            if (animate) {
+            if (hasMoved) {
                 it.animateCamera(cameraUpdate)
             } else {
                 it.moveCamera(cameraUpdate)
+                hasMoved = true
+            }
+        }
+    }
+
+    private fun checkMapState() {
+        val viewState = viewModel.viewState.get()
+        when (viewState) {
+            SHOW_DESTINATION -> showDestination()
+            SHOW_PICKUP -> showPickup()
+            else -> Unit
+        }
+    }
+
+    private fun getMapEmitter(): Maybe<GoogleMap> {
+        return Maybe.create { emitter ->
+            getMapAsync {
+                if (it != null) {
+                    emitter.onSuccess(it)
+                } else {
+                    emitter.onComplete()
+                }
             }
         }
     }
 
     inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-            val viewState = viewModel.viewState.get()
-            when (viewState) {
-                MapViewModel.ViewState.SHOW_DESTINATION -> showDestination()
-                MapViewModel.ViewState.SHOW_PICKUP -> showPickup()
-                else -> Unit
-            }
+            checkMapState()
         }
 
     }

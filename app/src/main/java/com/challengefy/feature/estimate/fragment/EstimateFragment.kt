@@ -79,7 +79,7 @@ class EstimateFragment : Fragment() {
         snapHelper.attachToRecyclerView(estimateList)
         estimateList.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
         estimateList.adapter = adapter
-        estimateList.addItemDecoration(EstimateMarginDecoration(estimateList.context))
+        estimateList.addItemDecoration(EstimateMarginDecoration(estimateList.context, binding.root))
         estimateList.addOnScrollListener(ScrollListener())
     }
 
@@ -108,15 +108,15 @@ class EstimateFragment : Fragment() {
     }
 
     private fun createTransition() = AutoTransition().apply {
-            addTarget(binding.estimateCardContainer)
-            addTarget(binding.estimateLoading)
-            addTarget(binding.estimateList)
-            addTarget(binding.estimateTxtCarTitle)
-            addTarget(binding.estimateBtnRequest)
-            addTarget(binding.estimateErrorBg)
-            addTarget(binding.estimateError)
-            addTarget(binding.estimateBtnTryAgain)
-            addTarget(binding.estimateTxtError)
+        addTarget(binding.estimateCardContainer)
+        addTarget(binding.estimateLoading)
+        addTarget(binding.estimateList)
+        addTarget(binding.estimateTxtCarTitle)
+        addTarget(binding.estimateBtnRequest)
+        addTarget(binding.estimateErrorBg)
+        addTarget(binding.estimateError)
+        addTarget(binding.estimateBtnTryAgain)
+        addTarget(binding.estimateTxtError)
     }
 
     private fun bindPaddingChange() {

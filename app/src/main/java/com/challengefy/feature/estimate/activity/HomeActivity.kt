@@ -9,13 +9,9 @@ import android.os.Bundle
 import android.support.transition.AutoTransition
 import android.support.transition.Fade
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
-import com.challengefy.feature.estimate.fragment.ConfirmPickupFragment
-import com.challengefy.feature.estimate.fragment.DestinationFragment
-import com.challengefy.feature.estimate.fragment.EstimateFragment
-import com.challengefy.feature.estimate.fragment.PickupFragment
+import com.challengefy.feature.estimate.fragment.*
 import com.challengefy.feature.estimate.navigator.HomeNavigator
 import com.challengefy.feature.estimate.viewmodel.HomeViewModel
 import com.challengefy.feature.map.fragment.MapFragment
@@ -58,6 +54,11 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
         viewModel.init()
         viewModel.viewState.addOnPropertyChangedCallback(viewStateListener)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        doBack()
     }
 
     override fun onDestroy() {
@@ -175,14 +176,47 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
         enterFade.startDelay = TRANSITION_DURATION + FADE_DURATION
 
         previousFragment.exitTransition = exitFade
+        previousFragment.reenterTransition = enterFade
         fragment.enterTransition = enterFade
+        fragment.returnTransition = exitFade
         fragment.sharedElementEnterTransition = enterTransitionSet
 
         supportFragmentManager.beginTransaction()
                 .addSharedElement(findViewById(R.id.estimate_card_pickup), getString(R.string.transition_pickup))
+                .addSharedElement(findViewById(R.id.estimate_card_destination), getString(R.string.transition_destination))
                 .replace(R.id.estimate_container_content, fragment)
                 .addToBackStack(null)
                 .commit()
+    }
+
+    private fun showFindingCar() {
+        val previousFragment = supportFragmentManager.findFragmentById(R.id.estimate_container_content)
+        val fragment = LookingForCarFragment.newInstance()
+
+        val exitFade = Fade()
+        exitFade.duration = FADE_DURATION
+
+        val enterFade = Fade()
+        enterFade.duration = FADE_DURATION
+        enterFade.startDelay = FADE_DURATION
+
+        previousFragment.exitTransition = exitFade
+        previousFragment.reenterTransition = enterFade
+        fragment.enterTransition = enterFade
+        fragment.returnTransition = exitFade
+
+        supportFragmentManager.beginTransaction()
+                .addSharedElement(findViewById(R.id.estimate_card_pickup), getString(R.string.transition_pickup))
+                .addSharedElement(findViewById(R.id.estimate_card_destination), getString(R.string.transition_destination))
+                .replace(R.id.estimate_container_content, fragment)
+                .addToBackStack(null)
+                .commit()
+    }
+
+    private fun doBack() {
+        viewModel.viewState.removeOnPropertyChangedCallback(viewStateListener)
+        viewModel.onBack()
+        viewModel.viewState.addOnPropertyChangedCallback(viewStateListener)
     }
 
     inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {
@@ -192,8 +226,10 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
                 HomeViewModel.ViewState.DESTINATION -> showDestinationFragment()
                 HomeViewModel.ViewState.ESTIMATE -> showEstimateFragment()
                 HomeViewModel.ViewState.CONFIRM_PICKUP -> showConfirmPickupFragment()
+                HomeViewModel.ViewState.LOOKING_FOR_CAR -> showFindingCar()
                 else -> Unit // Do Nothing
             }
         }
+
     }
 }

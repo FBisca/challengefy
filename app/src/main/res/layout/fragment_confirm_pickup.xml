@@ -4,6 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools">
 
   <data>
+
     <variable
         name="viewModel"
         type="com.challengefy.feature.estimate.viewmodel.ConfirmPickupViewModel"/>
@@ -24,7 +25,93 @@
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:pickUpAware="@{viewModel}"/>
+
+    <include
+        android:id="@+id/estimate_card_destination"
+        layout="@layout/include_destination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        app:destinationAware="@{viewModel}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/estimate_card_pickup"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/estimate_card_vehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:contentPadding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/estimate_card_destination">
+
+      <android.support.constraint.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/estimate_img_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_estimate_icon"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:tint="@color/white"
+            app:errorImage="@{@drawable/ic_directions_car_black_24dp}"
+            app:imageUrl="@{viewModel.estimateSelected.vehicle.icons.regular}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeHolder="@{@drawable/ic_directions_car_black_24dp}"/>
+
+        <TextView
+            android:id="@+id/estimate_txt_vehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.estimateSelected.vehicle.shortName}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/black_85"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/estimate_img_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Vehicle Name"/>
+
+        <TextView
+            android:id="@+id/estimate_txt_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_estimate_value_selected"
+            android:fontFamily="sans-serif-medium"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:text="@{viewModel.estimateSelected.price}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/estimate_txt_vehicle"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="$20,00"/>
+
+      </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/estimate_card_container"
@@ -52,7 +139,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="Confirm your current address"
+            android:text="Confirm your request"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:textColor="@color/black_85"/>
 

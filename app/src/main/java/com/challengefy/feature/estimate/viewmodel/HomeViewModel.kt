@@ -34,6 +34,13 @@ class HomeViewModel @Inject constructor(
 
     fun location() = positionRepository.getCurrentPosition()
 
+    fun onBack() {
+        val state = viewState.get()
+        state?.previous?.let {
+            updateViewState(it)
+        }
+    }
+
     fun pickUpReceived() {
         updateViewState(ViewState.DESTINATION)
     }
@@ -47,7 +54,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun pickUpConfirmed() {
-
+        updateViewState(ViewState.LOOKING_FOR_CAR)
     }
 
     private fun updateViewState(newState: ViewState) {
@@ -58,8 +65,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    enum class ViewState {
-        PICKUP, DESTINATION, ESTIMATE, CONFIRM_PICKUP, FINDING_CAR
+    enum class ViewState(
+            val previous: ViewState?
+    ) {
+        PICKUP(null),
+        DESTINATION(previous = PICKUP),
+        ESTIMATE(previous = DESTINATION),
+        CONFIRM_PICKUP(previous = ESTIMATE),
+        LOOKING_FOR_CAR(previous = CONFIRM_PICKUP)
     }
 
     inner class AddressChangeListener : Observable.OnPropertyChangedCallback() {

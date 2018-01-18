@@ -64,6 +64,10 @@ class HomeNavigator @Inject constructor(
         activity.startActivityForResult(intent, requestCode)
     }
 
+    fun goBack() {
+        activity.onBackPressed()
+    }
+
     fun attachResultListener(listener: ResolutionListener) {
         resolutionListeners.add(listener)
     }
