@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Challengefy</string>
+  <string name="app_name">Challengefy</string>
   <string name="estimate_finding_your_location">Finding your location</string>
   <string name="estimate_destination_hint">Where are we going to?</string>
   <string name="estimate_pickup_hint">Pickup Address</string>
@@ -8,4 +8,13 @@
   <string name="activate_location">Activate Location</string>
   <string name="location_disabled">Location is disabled</string>
   <string name="location_disabled_description">Without the location enabled we won\'t be able to define automatically where you are.\n\nActivate the location for a better experience.</string>
+  <string name="button_confirm">Confirm</string>
+  <string name="pickup_loading">Finding where we\nshould pick you</string>
+  <string name="confirm_request">Confirm your request</string>
+  <string name="confirm_request_body">Please confirm the meeting point before confirming</string>
+  <string name="select_your_car">Select your car</string>
+  <string name="error_message">Something bad happened.\nOur humble apologies for it.</string>
+  <string name="button_try_again">Try Again</string>
+  <string name="car_on_the_way">Your car is on his way</string>
+  <string name="button_cancel">Cancel</string>
 </resources>

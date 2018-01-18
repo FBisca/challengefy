@@ -54,7 +54,7 @@
         android:minHeight="56dp"
         android:enabled="@{viewModel.destinationAddress != null}"
         android:onClick="@{() -> viewModel.onConfirmClick()}"
-        android:text="Confirm"
+        android:text="@string/button_confirm"
         android:transitionName="@string/transition_btn_confirm"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

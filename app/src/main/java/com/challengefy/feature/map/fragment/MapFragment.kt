@@ -47,7 +47,6 @@ class MapFragment : SupportMapFragment() {
             val style = MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style)
             it.setMapStyle(style)
             it.uiSettings.setAllGesturesEnabled(true)
-            it.uiSettings.isZoomControlsEnabled = true
             it.uiSettings.isCompassEnabled = false
         }
     }

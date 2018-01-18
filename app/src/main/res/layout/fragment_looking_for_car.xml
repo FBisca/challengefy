@@ -38,7 +38,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your car is on his way"
+        android:text="@string/car_on_the_way"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:textColor="@color/white"
         app:layout_constraintVertical_bias="0.65"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:onClick="@{() -> viewModel.onCancelClick()}"
         android:padding="8dp"
-        android:text="Cancel"
+        android:text="@string/button_cancel"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
