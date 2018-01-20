@@ -25,7 +25,7 @@ class FusedLocationOnSubscribe(
             val callback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
                     result.locations.forEach {
-                        emitter.onNext(createPositionFromLocation(it, false))
+                        emitter.onNext(createPositionFromLocation(it))
                     }
                 }
             }
@@ -34,7 +34,7 @@ class FusedLocationOnSubscribe(
 
             locationServices.lastLocation.addOnCompleteListener {
                 if (it.isSuccessful && it.result != null) {
-                    emitter.onNext(createPositionFromLocation(it.result, true))
+                    emitter.onNext(createPositionFromLocation(it.result))
                 }
 
                 locationServices.requestLocationUpdates(locationRequest, callback, null)
@@ -46,10 +46,9 @@ class FusedLocationOnSubscribe(
         }
     }
 
-    private fun createPositionFromLocation(location: Location, lastLocation: Boolean) = Position(
+    private fun createPositionFromLocation(location: Location) = Position(
             location.latitude,
-            location.longitude,
-            lastLocation
+            location.longitude
     )
 }
 

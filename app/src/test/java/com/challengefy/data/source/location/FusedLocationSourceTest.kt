@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(value = [LocationServices::class, ContextCompat::class])
-class FusedPositionSourceTest {
+class FusedLocationSourceTest {
 
     @Test
     fun testUpdatesStopWhenDispose() {
@@ -108,7 +108,7 @@ class FusedPositionSourceTest {
         @Mock
         lateinit var task: Task<Location>
 
-        val source: FusedPositionSource
+        val source: FusedLocationSource
 
         private var locationUpdatesCallback: LocationCallback? = null
 
@@ -117,7 +117,7 @@ class FusedPositionSourceTest {
             PowerMockito.mockStatic(ContextCompat::class.java)
             PowerMockito.mockStatic(LocationServices::class.java)
 
-            this.source = FusedPositionSource(context)
+            this.source = FusedLocationSource(context)
         }
 
         fun withPermission(permission: Int) = apply {
@@ -148,7 +148,7 @@ class FusedPositionSourceTest {
             verify(fusedProviderClient).removeLocationUpdates(locationUpdatesCallback)
         }
 
-        inline fun doTest(test: FusedPositionSource.() -> Unit) = apply {
+        inline fun doTest(test: FusedLocationSource.() -> Unit) = apply {
             `when`(LocationServices.getFusedLocationProviderClient(any(Context::class.java)))
                     .thenReturn(fusedProviderClient)
             test(source)

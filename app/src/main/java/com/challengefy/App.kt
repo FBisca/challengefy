@@ -8,7 +8,7 @@ import dagger.android.HasActivityInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class App : Application(), HasActivityInjector {
+open class App : Application(), HasActivityInjector {
 
     @Inject
     lateinit var activityInjector : DispatchingAndroidInjector<Activity>
@@ -23,16 +23,16 @@ class App : Application(), HasActivityInjector {
         initializeLogger()
     }
 
+    override fun activityInjector() = activityInjector
+
     private fun initializeLogger() {
         Timber.plant(loggingTree)
     }
 
-    private fun initializeDagger() {
+    protected open fun initializeDagger() {
         DaggerApplicationComponent.builder()
                 .context(this)
                 .build()
                 .injectMembers(this)
     }
-
-    override fun activityInjector() = activityInjector
 }

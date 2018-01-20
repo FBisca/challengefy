@@ -4,6 +4,7 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.support.v4.content.ContextCompat
+import com.challengefy.base.util.OpenForTests
 import com.challengefy.data.model.Address
 import com.challengefy.data.model.Position
 import com.challengefy.data.model.PredictionAddress
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import io.reactivex.Single
 import javax.inject.Inject
 
+@OpenForTests
 class GooglePlaceSource @Inject constructor(
         private val context: Context
 ) : PlaceSource {
@@ -75,7 +77,7 @@ class GooglePlaceSource @Inject constructor(
         return Address(
                 place.name.toString(),
                 place.address.toString(),
-                Position(place.latLng.latitude, place.latLng.longitude, false)
+                Position(place.latLng.latitude, place.latLng.longitude)
         )
     }
 
@@ -86,7 +88,7 @@ class GooglePlaceSource @Inject constructor(
                     Address(
                             predictionAddress.title,
                             predictionAddress.description,
-                            Position(it.latLng.latitude, it.latLng.longitude, false)
+                            Position(it.latLng.latitude, it.latLng.longitude)
                     )
                 }
     }

@@ -4,6 +4,7 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.support.v4.content.ContextCompat
+import com.challengefy.base.util.OpenForTests
 import com.challengefy.data.model.Position
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -13,10 +14,10 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
 
-
-class FusedPositionSource @Inject constructor(
+@OpenForTests
+class FusedLocationSource @Inject constructor(
         private val context: Context
-) : PositionSource {
+) : LocationSource {
 
     override fun positionUpdates(locationRequest: LocationRequest): Flowable<Position> {
         return Flowable.create(FusedLocationOnSubscribe(context, locationRequest), BackpressureStrategy.LATEST)

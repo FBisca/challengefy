@@ -10,7 +10,7 @@ import javax.inject.Singleton
 abstract class RepositoryModule {
 
     @Binds
-    abstract fun positionRepository(positionRepositoryImpl: PositionRepositoryImpl): PositionRepository
+    abstract fun locationRepository(positionRepositoryImpl: LocationRepositoryImpl): LocationRepository
 
     @Binds
     abstract fun placeRepository(placeRepositoryImpl: PlaceRepositoryImpl): PlaceRepository

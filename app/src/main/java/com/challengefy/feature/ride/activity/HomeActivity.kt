@@ -44,9 +44,6 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var homeNavigator: HomeNavigator
 
-    private val mapFragment = MapFragment.newInstance()
-    private val pickupFragment = PickupFragment.newInstance()
-
     private val viewStateListener = ViewStateChangeListener()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,12 +97,14 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
     override fun supportFragmentInjector() = fragmentInjector
 
     private fun initMapFragment() {
+        val mapFragment = findFragment() ?: MapFragment.newInstance()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.estimate_container_map, mapFragment)
                 .commit()
     }
 
     private fun initPickupFragment() {
+        val pickupFragment = findFragment() ?: PickupFragment.newInstance()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.estimate_container_content, pickupFragment)
                 .commit()
@@ -113,24 +112,24 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     private fun showDestinationFragment() {
         val previousFragment = supportFragmentManager.findFragmentById(R.id.estimate_container_content)
-        val fragment = DestinationFragment.newInstance()
+        val fragment = findFragment() ?: DestinationFragment.newInstance()
 
         val exitFade = Fade()
-        exitFade.duration = 300
+        exitFade.duration = FADE_DURATION
 
         previousFragment.exitTransition = exitFade
 
         val enterTransitionSet = AutoTransition()
-        enterTransitionSet.duration = 300
-        enterTransitionSet.startDelay = 300
+        enterTransitionSet.duration = FADE_DURATION
+        enterTransitionSet.startDelay = FADE_DURATION
 
         val returnTransition = AutoTransition()
-        returnTransition.duration = 300
-        returnTransition.startDelay = 900
+        returnTransition.duration = FADE_DURATION
+        returnTransition.startDelay = FADE_DURATION + TRANSITION_DURATION
 
         val enterFade = Fade()
-        enterFade.startDelay = 300
-        enterFade.duration = 300
+        enterFade.startDelay = FADE_DURATION
+        enterFade.duration = FADE_DURATION
 
         fragment.enterTransition = enterFade
         fragment.returnTransition = exitFade
@@ -147,25 +146,24 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     private fun showEstimateFragment() {
         val previousFragment = supportFragmentManager.findFragmentById(R.id.estimate_container_content)
-        val fragment = EstimateFragment.newInstance()
+        val fragment = findFragment() ?: EstimateFragment.newInstance()
 
         val exitFade = Fade()
-        exitFade.duration = 300
-
-        previousFragment.exitTransition = exitFade
+        exitFade.duration = FADE_DURATION
 
         val enterTransitionSet = AutoTransition()
-        enterTransitionSet.duration = 600
-        enterTransitionSet.startDelay = 300
+        enterTransitionSet.duration = TRANSITION_DURATION
+        enterTransitionSet.startDelay = FADE_DURATION
 
         val returnTransition = AutoTransition()
-        returnTransition.duration = 600
-        returnTransition.startDelay = 900
+        returnTransition.duration = TRANSITION_DURATION
+        returnTransition.startDelay = FADE_DURATION + TRANSITION_DURATION
 
         val enterFade = Fade()
-        enterFade.startDelay = 300
-        enterFade.duration = 600
+        enterFade.startDelay = FADE_DURATION
+        enterFade.duration = TRANSITION_DURATION
 
+        previousFragment.exitTransition = exitFade
         fragment.enterTransition = enterFade
         fragment.returnTransition = exitFade
         fragment.sharedElementEnterTransition = enterTransitionSet
@@ -181,7 +179,7 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     private fun showConfirmPickupFragment() {
         val previousFragment = supportFragmentManager.findFragmentById(R.id.estimate_container_content)
-        val fragment = ConfirmPickupFragment.newInstance()
+        val fragment = findFragment() ?: ConfirmPickupFragment.newInstance()
 
         val exitFade = Fade()
         exitFade.duration = FADE_DURATION
@@ -210,7 +208,7 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
     private fun showFindingCar() {
         val previousFragment = supportFragmentManager.findFragmentById(R.id.estimate_container_content)
-        val fragment = LookingForCarFragment.newInstance()
+        val fragment = findFragment() ?: LookingForCarFragment.newInstance()
 
         val exitFade = Fade()
         exitFade.duration = FADE_DURATION

@@ -1,9 +1,11 @@
 package com.challengefy.base.di.module
 
 import com.challengefy.BuildConfig
+import com.challengefy.base.util.OpenForTests
 import com.challengefy.data.network.interceptors.AuthInterceptor
 import dagger.Module
 import dagger.Provides
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,16 +15,22 @@ import javax.inject.Singleton
 
 @Singleton
 @Module(includes = [ApiModule::class])
+@OpenForTests
 class NetworkModule {
 
     @Provides
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
+    fun provideRetrofit(client: OkHttpClient, httpUrl: HttpUrl): Retrofit {
         return Retrofit.Builder()
                 .client(client)
-                .baseUrl(BuildConfig.BASE_URL)
+                .baseUrl(httpUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
+    }
+
+    @Provides
+    fun providesBaseUrl(): HttpUrl {
+        return HttpUrl.parse(BuildConfig.BASE_URL) ?: throw IllegalArgumentException("BaseUrl is null")
     }
 
     @Provides

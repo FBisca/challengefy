@@ -13,6 +13,7 @@ import com.challengefy.feature.ride.bindings.MapPaddingBinding
 import com.challengefy.feature.ride.viewmodel.ConfirmPickupViewModel
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposables
+import io.reactivex.functions.BiFunction
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -56,7 +57,9 @@ class ConfirmPickupFragment : Fragment() {
 
     private fun bindPaddingChange() {
         paddingDisposable = binding.estimateCardContainer.boundsChangeEvents()
-                .map { Rect(it.left, 0, binding.root.width - it.right, binding.root.height - it.bottom) }
+                .zipWith(binding.estimateCardVehicle.boundsChangeEvents(), BiFunction<Rect, Rect, Rect> { cardBounds, vehicleBounds ->
+                    Rect(0, vehicleBounds.bottom, 0, binding.root.height - cardBounds.bottom)
+                })
                 .subscribe(
                         { mapPaddingBinding.postPaddingChange(it) },
                         { Timber.e(it) }

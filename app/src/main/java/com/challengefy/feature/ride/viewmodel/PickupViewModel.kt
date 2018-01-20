@@ -5,9 +5,9 @@ import com.challengefy.base.di.scope.FragmentScope
 import com.challengefy.base.scheduler.SchedulerManager
 import com.challengefy.data.model.Address
 import com.challengefy.data.repository.PlaceRepository
-import com.challengefy.data.repository.PositionRepository
-import com.challengefy.data.repository.PositionRepository.LocationState.ACTIVE
-import com.challengefy.data.repository.PositionRepository.LocationState.NO_PERMISSION
+import com.challengefy.data.repository.LocationRepository
+import com.challengefy.data.repository.LocationRepository.LocationState.ACTIVE
+import com.challengefy.data.repository.LocationRepository.LocationState.NO_PERMISSION
 import com.challengefy.feature.ride.bindings.PickupAware
 import com.challengefy.feature.ride.navigator.HomeNavigator
 import com.google.android.gms.common.api.ResolvableApiException
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class PickupViewModel @Inject constructor(
         override val homeNavigator: HomeNavigator,
         private val homeViewModel: HomeViewModel,
-        private val positionRepository: PositionRepository,
+        private val locationRepository: LocationRepository,
         private val placeRepository: PlaceRepository,
         private val schedulerManager: SchedulerManager
 ) : HomeNavigator.ResolutionListener, PickupAware {
@@ -82,7 +82,7 @@ class PickupViewModel @Inject constructor(
     }
 
     private fun initLocationState(alreadyRequested: Boolean) {
-        positionRepository.getLocationState()
+        locationRepository.getLocationState()
                 .subscribe(
                         {
                             when (it) {

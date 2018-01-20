@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-allopen'
 
 android {
     compileSdkVersion 27
@@ -11,7 +12,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.challengefy.feature.test.AppJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -39,6 +40,10 @@ android {
 
 androidExtensions {
     experimental = true
+}
+
+allOpen {
+    annotation("com.challengefy.base.util.OpenForTests")
 }
 
 dependencies {
@@ -87,8 +92,13 @@ dependencies {
     testImplementation "org.powermock:powermock-api-mockito2:2.0.0-beta.5"
 
     // Instrumented
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:3.9.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
+
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$dagger_version"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
 }
+
