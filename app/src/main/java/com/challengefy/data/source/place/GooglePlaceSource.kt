@@ -3,6 +3,7 @@ package com.challengefy.data.source.place
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.location.Geocoder
 import android.support.v4.content.ContextCompat
 import com.challengefy.base.util.OpenForTests
 import com.challengefy.data.model.Address
@@ -11,12 +12,15 @@ import com.challengefy.data.model.PredictionAddress
 import com.google.android.gms.location.places.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import io.reactivex.Maybe
 import io.reactivex.Single
+import java.util.*
 import javax.inject.Inject
 
 @OpenForTests
 class GooglePlaceSource @Inject constructor(
-        private val context: Context
+        private val context: Context,
+        private val locale: Locale
 ) : PlaceSource {
 
     override fun autoCompletePlaces(query: String, northeast: LatLng?, southwest: LatLng?): Single<List<PredictionAddress>> {
@@ -48,6 +52,35 @@ class GooglePlaceSource @Inject constructor(
                     emitter.onSuccess(parsePlaceResult(predictionAddress, it.result))
                 } else {
                     emitter.onError(it.exception ?: IllegalArgumentException("Failed to detail prediction"))
+                }
+            }
+        }
+    }
+
+    override fun getAddressByPosition(position: Position): Maybe<Address> {
+        return Maybe.fromCallable {
+
+            val geocoder = Geocoder(context, locale)
+            val addresses = geocoder.getFromLocation(position.latitude, position.longitude, 1)
+            addresses.firstOrNull()?.let {
+
+                val addressLine = it.getAddressLine(0)
+                val split = addressLine.split(" - ")
+                if (split.size > 1) {
+                    Address(
+                            split.first(),
+                            split.slice(1 until split.size)
+                                    .reduce({ addressLeft, addressRight ->
+                                        "$addressLeft - $addressRight"
+                                    }),
+                            Position(it.latitude, it.longitude)
+                    )
+                } else {
+                    Address(
+                            addressLine,
+                            it.getAddressLine(1) ?: "",
+                            Position(it.latitude, it.longitude)
+                    )
                 }
             }
         }

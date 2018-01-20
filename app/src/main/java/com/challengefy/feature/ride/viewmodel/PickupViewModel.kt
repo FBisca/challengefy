@@ -3,14 +3,16 @@ package com.challengefy.feature.ride.viewmodel
 import android.databinding.ObservableField
 import com.challengefy.base.di.scope.FragmentScope
 import com.challengefy.base.scheduler.SchedulerManager
+import com.challengefy.base.util.distanceTo
 import com.challengefy.data.model.Address
-import com.challengefy.data.repository.PlaceRepository
 import com.challengefy.data.repository.LocationRepository
 import com.challengefy.data.repository.LocationRepository.LocationState.ACTIVE
 import com.challengefy.data.repository.LocationRepository.LocationState.NO_PERMISSION
+import com.challengefy.data.repository.PlaceRepository
 import com.challengefy.feature.ride.bindings.PickupAware
 import com.challengefy.feature.ride.navigator.HomeNavigator
 import com.google.android.gms.common.api.ResolvableApiException
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -23,6 +25,10 @@ class PickupViewModel @Inject constructor(
         private val placeRepository: PlaceRepository,
         private val schedulerManager: SchedulerManager
 ) : HomeNavigator.ResolutionListener, PickupAware {
+
+    companion object {
+        const val MAXIMUM_PLACE_DISTANCE_METERS = 30.0
+    }
 
     override val pickUpAddress = homeViewModel.pickUpAddress
 
@@ -105,6 +111,7 @@ class PickupViewModel @Inject constructor(
     private fun locationEnabled() {
         placeRepository.getCurrentPlace()
                 .doOnSubscribe { loading() }
+                .flatMap { checkPlaceCloseEnough(it) }
                 .delay(500, TimeUnit.MILLISECONDS, schedulerManager.timeScheduler())
                 .observeOn(schedulerManager.mainThread())
                 .subscribe(
@@ -120,6 +127,20 @@ class PickupViewModel @Inject constructor(
                         }
                 )
                 .apply { disposables.add(this) }
+    }
+
+    private fun checkPlaceCloseEnough(address: Address): Single<Address> {
+        return locationRepository.getUserLocation()
+                .flatMap {
+                    val placeSingle = Single.just(address)
+                    if (address.distanceTo(it) > MAXIMUM_PLACE_DISTANCE_METERS) {
+                        placeRepository.getAddressByPosition(it)
+                                .switchIfEmpty(placeSingle)
+                                .onErrorReturnItem(address)
+                    } else {
+                        placeSingle
+                    }
+                }
     }
 
     private fun locationReceived(address: Address) {
