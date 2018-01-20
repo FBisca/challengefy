@@ -6,8 +6,8 @@ import com.challengefy.base.scheduler.SchedulerManager
 import com.challengefy.data.model.Address
 import com.challengefy.data.model.PredictionAddress
 import com.challengefy.data.repository.PlaceRepository
+import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
@@ -47,9 +47,9 @@ class AddressSearchViewModel @Inject constructor(
         keyTappedSubject.onNext("")
     }
 
-    private fun listenForAddresses() {
-        inputSubject.debounce(300L, TimeUnit.MILLISECONDS)
-                .throttleLast(300L, TimeUnit.MILLISECONDS)
+    fun inputObservable(): Observable<List<PredictionAddress>> {
+        return inputSubject.debounce(300L, TimeUnit.MILLISECONDS, schedulerManager.timeScheduler())
+                .throttleLast(300L, TimeUnit.MILLISECONDS, schedulerManager.timeScheduler())
                 .mergeWith { keyTappedSubject }
                 .observeOn(schedulerManager.mainThread())
                 .doOnNext { viewState.set(ViewState.LOADING) }
@@ -59,6 +59,10 @@ class AddressSearchViewModel @Inject constructor(
                             .toObservable()
                 }
                 .observeOn(schedulerManager.mainThread())
+    }
+
+    private fun listenForAddresses() {
+        inputObservable()
                 .subscribe(
                         {
                             predictions.set(it)
