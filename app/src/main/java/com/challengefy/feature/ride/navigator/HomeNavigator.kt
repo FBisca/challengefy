@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.navigator
+package com.challengefy.feature.ride.navigator
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.Activity
@@ -9,7 +9,7 @@ import android.support.v4.app.ActivityCompat
 import com.challengefy.base.di.scope.ActivityScope
 import com.challengefy.data.model.Address
 import com.challengefy.feature.address.activity.AddressSearchActivity
-import com.challengefy.feature.estimate.activity.HomeActivity
+import com.challengefy.feature.ride.activity.HomeActivity
 import com.google.android.gms.common.api.ResolvableApiException
 import javax.inject.Inject
 

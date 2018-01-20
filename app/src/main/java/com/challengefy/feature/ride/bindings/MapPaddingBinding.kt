@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.bindings
+package com.challengefy.feature.ride.bindings
 
 import android.graphics.Rect
 import com.challengefy.base.di.scope.ActivityScope

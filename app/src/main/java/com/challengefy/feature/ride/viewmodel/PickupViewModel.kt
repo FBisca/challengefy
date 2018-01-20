@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.viewmodel
+package com.challengefy.feature.ride.viewmodel
 
 import android.databinding.ObservableField
 import com.challengefy.base.di.scope.FragmentScope
@@ -8,9 +8,8 @@ import com.challengefy.data.repository.PlaceRepository
 import com.challengefy.data.repository.PositionRepository
 import com.challengefy.data.repository.PositionRepository.LocationState.ACTIVE
 import com.challengefy.data.repository.PositionRepository.LocationState.NO_PERMISSION
-import com.challengefy.feature.estimate.bindings.MapPaddingBinding
-import com.challengefy.feature.estimate.bindings.PickupAware
-import com.challengefy.feature.estimate.navigator.HomeNavigator
+import com.challengefy.feature.ride.bindings.PickupAware
+import com.challengefy.feature.ride.navigator.HomeNavigator
 import com.google.android.gms.common.api.ResolvableApiException
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit

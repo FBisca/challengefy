@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.fragment
+package com.challengefy.feature.ride.fragment
 
 import android.content.Context
 import android.graphics.Rect
@@ -8,27 +8,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.challengefy.base.util.boundsChangeEvents
-import com.challengefy.databinding.FragmentConfirmPickupBinding
-import com.challengefy.feature.estimate.bindings.MapPaddingBinding
-import com.challengefy.feature.estimate.viewmodel.ConfirmPickupViewModel
+import com.challengefy.databinding.FragmentDestinationBinding
+import com.challengefy.feature.ride.bindings.MapPaddingBinding
+import com.challengefy.feature.ride.viewmodel.DestinationViewModel
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposables
 import timber.log.Timber
 import javax.inject.Inject
 
-class ConfirmPickupFragment : Fragment() {
+class DestinationFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ConfirmPickupFragment()
+        fun newInstance() = DestinationFragment()
     }
 
     @Inject
-    lateinit var viewModel: ConfirmPickupViewModel
+    lateinit var viewModel: DestinationViewModel
 
     @Inject
     lateinit var mapPaddingBinding: MapPaddingBinding
 
-    private lateinit var binding: FragmentConfirmPickupBinding
+    private lateinit var binding: FragmentDestinationBinding
 
     private var paddingDisposable = Disposables.empty()
 
@@ -39,7 +39,7 @@ class ConfirmPickupFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = FragmentConfirmPickupBinding.inflate(inflater, container, false)
+        binding = FragmentDestinationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,19 +47,26 @@ class ConfirmPickupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindPaddingChange()
         binding.viewModel = viewModel
+
+        viewModel.init()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         paddingDisposable.dispose()
+        viewModel.dispose()
     }
 
     private fun bindPaddingChange() {
-        paddingDisposable = binding.estimateCardContainer.boundsChangeEvents()
-                .map { Rect(it.left, 0, binding.root.width - it.right, binding.root.height - it.bottom) }
-                .subscribe(
-                        { mapPaddingBinding.postPaddingChange(it) },
-                        { Timber.e(it) }
-                )
+        val view = binding.estimateCardPickup?.estimateCardPickup
+        if (view != null) {
+            paddingDisposable = view.boundsChangeEvents()
+                    .map { Rect(0, 0, 0, binding.root.height - it.top) }
+                    .subscribe(
+                            { mapPaddingBinding.postPaddingChange(it) },
+                            { Timber.e(it) }
+                    )
+        }
     }
+
 }

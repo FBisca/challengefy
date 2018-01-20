@@ -5,7 +5,7 @@ import android.databinding.Observable
 import android.os.Bundle
 import android.util.SparseArray
 import com.challengefy.R
-import com.challengefy.feature.estimate.bindings.MapPaddingBinding
+import com.challengefy.feature.ride.bindings.MapPaddingBinding
 import com.challengefy.feature.map.viewmodel.MapViewModel
 import com.challengefy.feature.map.viewmodel.MapViewModel.ViewState.*
 import com.google.android.gms.maps.CameraUpdateFactory

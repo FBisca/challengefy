@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.viewmodel
+package com.challengefy.feature.ride.viewmodel
 
 import android.databinding.Observable
 import android.databinding.ObservableField
@@ -6,9 +6,9 @@ import android.databinding.ObservableInt
 import com.challengefy.base.scheduler.SchedulerManager
 import com.challengefy.data.model.Estimate
 import com.challengefy.data.repository.RideRepository
-import com.challengefy.feature.estimate.bindings.DestinationAware
-import com.challengefy.feature.estimate.bindings.PickupAware
-import com.challengefy.feature.estimate.navigator.HomeNavigator
+import com.challengefy.feature.ride.bindings.DestinationAware
+import com.challengefy.feature.ride.bindings.PickupAware
+import com.challengefy.feature.ride.navigator.HomeNavigator
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber

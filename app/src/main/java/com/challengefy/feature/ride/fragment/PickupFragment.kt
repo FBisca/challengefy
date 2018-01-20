@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.fragment
+package com.challengefy.feature.ride.fragment
 
 import android.content.Context
 import android.databinding.Observable
@@ -13,8 +13,8 @@ import android.view.ViewGroup.LayoutParams
 import com.challengefy.R
 import com.challengefy.base.util.boundsChangeEvents
 import com.challengefy.databinding.FragmentPickupBinding
-import com.challengefy.feature.estimate.bindings.MapPaddingBinding
-import com.challengefy.feature.estimate.viewmodel.PickupViewModel
+import com.challengefy.feature.ride.bindings.MapPaddingBinding
+import com.challengefy.feature.ride.viewmodel.PickupViewModel
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposables
 import timber.log.Timber

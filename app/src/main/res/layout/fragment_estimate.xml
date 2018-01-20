@@ -7,7 +7,7 @@
 
     <variable
         name="viewModel"
-        type="com.challengefy.feature.estimate.viewmodel.EstimateViewModel"/>
+        type="com.challengefy.feature.ride.viewmodel.EstimateViewModel"/>
 
   </data>
 

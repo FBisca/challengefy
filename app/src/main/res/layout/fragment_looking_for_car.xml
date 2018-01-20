@@ -7,7 +7,7 @@
 
     <variable
         name="viewModel"
-        type="com.challengefy.feature.estimate.viewmodel.LookingForCarViewModel"/>
+        type="com.challengefy.feature.ride.viewmodel.LookingForCarViewModel"/>
   </data>
 
   <android.support.constraint.ConstraintLayout

@@ -17,7 +17,7 @@
         android:screenOrientation="portrait"/>
 
     <activity
-        android:name="com.challengefy.feature.estimate.activity.HomeActivity"
+        android:name="com.challengefy.feature.ride.activity.HomeActivity"
         android:screenOrientation="portrait"/>
 
     <activity

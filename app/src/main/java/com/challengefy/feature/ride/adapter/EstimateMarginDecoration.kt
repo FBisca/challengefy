@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.adapter
+package com.challengefy.feature.ride.adapter
 
 import android.content.Context
 import android.graphics.Rect

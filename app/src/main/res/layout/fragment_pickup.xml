@@ -7,7 +7,7 @@
 
     <variable
         name="viewModel"
-        type="com.challengefy.feature.estimate.viewmodel.PickupViewModel"/>
+        type="com.challengefy.feature.ride.viewmodel.PickupViewModel"/>
   </data>
 
   <android.support.constraint.ConstraintLayout

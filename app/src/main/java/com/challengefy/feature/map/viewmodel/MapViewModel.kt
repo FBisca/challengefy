@@ -4,7 +4,7 @@ import android.databinding.Observable
 import android.databinding.ObservableField
 import com.challengefy.base.di.scope.FragmentScope
 import com.challengefy.base.scheduler.SchedulerManager
-import com.challengefy.feature.estimate.viewmodel.HomeViewModel
+import com.challengefy.feature.ride.viewmodel.HomeViewModel
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.FlowableEmitter

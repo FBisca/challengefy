@@ -1,8 +1,8 @@
-package com.challengefy.feature.estimate.module
+package com.challengefy.feature.ride.module
 
 import com.challengefy.base.di.scope.ActivityScope
 import com.challengefy.base.di.scope.FragmentScope
-import com.challengefy.feature.estimate.fragment.*
+import com.challengefy.feature.ride.fragment.*
 import com.challengefy.feature.map.fragment.MapFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

@@ -1,11 +1,10 @@
-package com.challengefy.feature.estimate.viewmodel
+package com.challengefy.feature.ride.viewmodel
 
 import android.databinding.Observable
 import android.databinding.ObservableField
 import com.challengefy.base.di.scope.ActivityScope
 import com.challengefy.data.model.Address
 import com.challengefy.data.model.Estimate
-import com.challengefy.data.repository.PositionRepository
 import javax.inject.Inject
 
 @ActivityScope

@@ -1,9 +1,8 @@
-package com.challengefy.feature.estimate.adapter
+package com.challengefy.feature.ride.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.challengefy.R
 import com.challengefy.data.model.Estimate
 import com.challengefy.databinding.ItemEstimateBinding
 

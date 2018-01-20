@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.activity
+package com.challengefy.feature.ride.activity
 
 import android.content.Context
 import android.content.Intent
@@ -11,9 +11,9 @@ import android.support.transition.Fade
 import android.support.v4.app.Fragment
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
-import com.challengefy.feature.estimate.fragment.*
-import com.challengefy.feature.estimate.navigator.HomeNavigator
-import com.challengefy.feature.estimate.viewmodel.HomeViewModel
+import com.challengefy.feature.ride.fragment.*
+import com.challengefy.feature.ride.navigator.HomeNavigator
+import com.challengefy.feature.ride.viewmodel.HomeViewModel
 import com.challengefy.feature.map.fragment.MapFragment
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector

@@ -1,8 +1,8 @@
-package com.challengefy.feature.estimate.bindings
+package com.challengefy.feature.ride.bindings
 
 import android.databinding.ObservableField
 import com.challengefy.data.model.Address
-import com.challengefy.feature.estimate.navigator.HomeNavigator
+import com.challengefy.feature.ride.navigator.HomeNavigator
 
 
 interface PickupAware : HomeNavigator.PickUpListener {

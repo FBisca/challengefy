@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.fragment
+package com.challengefy.feature.ride.fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.challengefy.databinding.FragmentLookingForCarBinding
-import com.challengefy.feature.estimate.viewmodel.LookingForCarViewModel
+import com.challengefy.feature.ride.viewmodel.LookingForCarViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 

@@ -1,9 +1,9 @@
-package com.challengefy.feature.estimate.viewmodel
+package com.challengefy.feature.ride.viewmodel
 
 import com.challengefy.base.di.scope.FragmentScope
-import com.challengefy.feature.estimate.bindings.DestinationAware
-import com.challengefy.feature.estimate.bindings.PickupAware
-import com.challengefy.feature.estimate.navigator.HomeNavigator
+import com.challengefy.feature.ride.bindings.DestinationAware
+import com.challengefy.feature.ride.bindings.PickupAware
+import com.challengefy.feature.ride.navigator.HomeNavigator
 import javax.inject.Inject
 
 @FragmentScope

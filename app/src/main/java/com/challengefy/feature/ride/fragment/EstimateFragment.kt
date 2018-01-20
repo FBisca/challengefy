@@ -1,4 +1,4 @@
-package com.challengefy.feature.estimate.fragment
+package com.challengefy.feature.ride.fragment
 
 import android.content.Context
 import android.databinding.Observable
@@ -16,10 +16,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.challengefy.base.util.boundsChangeEvents
 import com.challengefy.databinding.FragmentEstimateBinding
-import com.challengefy.feature.estimate.adapter.EstimateAdapter
-import com.challengefy.feature.estimate.adapter.EstimateMarginDecoration
-import com.challengefy.feature.estimate.bindings.MapPaddingBinding
-import com.challengefy.feature.estimate.viewmodel.EstimateViewModel
+import com.challengefy.feature.ride.adapter.EstimateAdapter
+import com.challengefy.feature.ride.adapter.EstimateMarginDecoration
+import com.challengefy.feature.ride.bindings.MapPaddingBinding
+import com.challengefy.feature.ride.viewmodel.EstimateViewModel
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposables
 import io.reactivex.functions.BiFunction
