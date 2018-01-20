@@ -19,7 +19,11 @@ class HomeViewModel @Inject constructor() {
 
     private val addressChangeListener = AddressChangeListener()
 
-    fun init() {
+    fun init(pickup: Address?, destination: Address?, estimateSelected: Estimate?) {
+        this.pickUpAddress.set(pickup)
+        this.destinationAddress.set(destination)
+        this.estimateSelected.set(estimateSelected)
+
         pickUpAddress.addOnPropertyChangedCallback(addressChangeListener)
         destinationAddress.addOnPropertyChangedCallback(addressChangeListener)
     }

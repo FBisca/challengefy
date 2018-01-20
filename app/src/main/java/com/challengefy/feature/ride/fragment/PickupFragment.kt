@@ -70,7 +70,7 @@ class PickupFragment : Fragment() {
             pickupCard.visibility = View.VISIBLE
             pickupCard.layoutParams.width = LayoutParams.MATCH_PARENT
 
-            estimateBtnConfirm.visibility = View.GONE
+            estimateBtnConfirm.visibility = View.VISIBLE
             pickupLoading.visibility = View.GONE
             pickupAddress.visibility = View.VISIBLE
             pickupCardLocationPermission.visibility = View.VISIBLE

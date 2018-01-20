@@ -16,6 +16,16 @@ class ConfirmPickupViewModel @Inject constructor(
     override val destinationAddress = homeViewModel.destinationAddress
     val estimateSelected = homeViewModel.estimateSelected
 
+    fun init() {
+        homeNavigator.attachPickUpListener(this)
+        homeNavigator.attachDestinationListener(this)
+    }
+
+    fun dispose() {
+        homeNavigator.detachPickUpListener(this)
+        homeNavigator.detachDestinationListener(this)
+    }
+
     fun onConfirmClick() {
         homeViewModel.pickUpConfirmed()
     }

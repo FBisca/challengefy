@@ -31,18 +31,8 @@ class HomeNavigator @Inject constructor(
     private val pickUpListeners = mutableSetOf<PickUpListener>()
     private val destinationListeners = mutableSetOf<DestinationListener>()
 
-    fun requestLocationPermission(isUserAction: Boolean): Boolean {
-        return when {
-            shouldShowRationaleLocation() -> {
-                ActivityCompat.requestPermissions(activity, arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
-                true
-            }
-            isUserAction -> {
-                goToAppSettings()
-                true
-            }
-            else -> false
-        }
+    fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(activity, arrayOf(ACCESS_FINE_LOCATION), REQUEST_CODE_PERMISSION)
     }
 
     fun startResolution(exception: ResolvableApiException) {
@@ -115,7 +105,7 @@ class HomeNavigator @Inject constructor(
         }
     }
 
-    private fun shouldShowRationaleLocation(): Boolean {
+    fun shouldShowRationaleLocation(): Boolean {
         return ActivityCompat.shouldShowRequestPermissionRationale(activity, ACCESS_FINE_LOCATION)
     }
 

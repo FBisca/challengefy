@@ -51,7 +51,11 @@ class PickupViewModel @Inject constructor(
     fun onActivateLocationClick() {
         val state = viewState.get()
         if (state == ViewState.LOCATION_NO_PERMISSION) {
-            homeNavigator.requestLocationPermission(true)
+            if (homeNavigator.shouldShowRationaleLocation()) {
+                homeNavigator.requestLocationPermission()
+            } else {
+                homeNavigator.goToAppSettings()
+            }
         } else if (state == ViewState.LOCATION_DISABLED) {
             homeNavigator.goToLocationSettings()
         }
@@ -129,9 +133,10 @@ class PickupViewModel @Inject constructor(
         if (alreadyRequested) {
             viewState.set(ViewState.LOCATION_NO_PERMISSION)
         } else {
-            val displayedToUser = homeNavigator.requestLocationPermission(false)
-            if (!displayedToUser) {
+            if (homeNavigator.shouldShowRationaleLocation()) {
                 viewState.set(ViewState.LOCATION_NO_PERMISSION)
+            } else {
+                homeNavigator.requestLocationPermission()
             }
         }
     }

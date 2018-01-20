@@ -11,6 +11,8 @@ import android.support.transition.Fade
 import android.support.v4.app.Fragment
 import com.challengefy.R
 import com.challengefy.base.activity.BaseActivity
+import com.challengefy.data.model.Address
+import com.challengefy.data.model.Estimate
 import com.challengefy.feature.ride.fragment.*
 import com.challengefy.feature.ride.navigator.HomeNavigator
 import com.challengefy.feature.ride.viewmodel.HomeViewModel
@@ -25,6 +27,10 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
     companion object {
         const val FADE_DURATION = 300L
         const val TRANSITION_DURATION = 600L
+
+        private const val BUNDLE_PICKUP = "BUNDLE_PICKUP"
+        private const val BUNDLE_DESTINATION = "BUNDLE_DESTINATION"
+        private const val BUNDLE_SELECTED_ESTIMATE = "BUNDLE_SELECTED_ESTIMATE"
 
         fun startIntent(context: Context) = Intent(context, HomeActivity::class.java)
     }
@@ -49,10 +55,16 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
 
         setContentView(R.layout.activity_home)
 
-        initMapFragment()
-        initPickupFragment()
+        if (savedInstanceState == null) {
+            initMapFragment()
+            initPickupFragment()
+        }
 
-        viewModel.init()
+        val pickup = savedInstanceState?.getParcelable<Address>(BUNDLE_PICKUP)
+        val destination = savedInstanceState?.getParcelable<Address>(BUNDLE_DESTINATION)
+        val estimateSelected = savedInstanceState?.getParcelable<Estimate>(BUNDLE_SELECTED_ESTIMATE)
+
+        viewModel.init(pickup, destination, estimateSelected)
         viewModel.viewState.addOnPropertyChangedCallback(viewStateListener)
     }
 
@@ -76,6 +88,13 @@ class HomeActivity : BaseActivity(), HasSupportFragmentInjector {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         homeNavigator.postActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putParcelable(BUNDLE_PICKUP, viewModel.pickUpAddress.get())
+        outState?.putParcelable(BUNDLE_DESTINATION, viewModel.destinationAddress.get())
+        outState?.putParcelable(BUNDLE_SELECTED_ESTIMATE, viewModel.estimateSelected.get())
     }
 
     override fun supportFragmentInjector() = fragmentInjector

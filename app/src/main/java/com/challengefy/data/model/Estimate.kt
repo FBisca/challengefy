@@ -27,9 +27,9 @@ data class Vehicle(
         @SerializedName("name") val name: String,
         @SerializedName("icons") val icons: Icons,
         @SerializedName("short_name") val shortName: String,
-        @SerializedName("description") val description: String,
-        @SerializedName("service_type") val serviceType: String,
-        @SerializedName("eta") val eta: ETA
+        @SerializedName("description") val description: String?,
+        @SerializedName("service_type") val serviceType: String?,
+        @SerializedName("eta") val eta: ETA?
 ) : Parcelable
 
 @SuppressLint("ParcelCreator")
