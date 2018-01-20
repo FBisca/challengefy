@@ -3,6 +3,7 @@ package com.challengefy
 import android.app.Activity
 import android.app.Application
 import com.challengefy.base.di.component.DaggerApplicationComponent
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
@@ -23,7 +24,7 @@ open class App : Application(), HasActivityInjector {
         initializeLogger()
     }
 
-    override fun activityInjector() = activityInjector
+    override fun activityInjector(): AndroidInjector<Activity> = activityInjector
 
     private fun initializeLogger() {
         Timber.plant(loggingTree)

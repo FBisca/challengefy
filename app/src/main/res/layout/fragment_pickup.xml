@@ -183,7 +183,7 @@
             android:background="@color/black_35"
             app:layout_constraintTop_toBottomOf="@+id/pickup_txt_location_description"/>
 
-        <TextView
+        <Button
             android:id="@+id/pickup_txt_location_activate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

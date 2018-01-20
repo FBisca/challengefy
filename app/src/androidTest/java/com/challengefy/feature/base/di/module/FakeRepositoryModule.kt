@@ -24,4 +24,21 @@ class FakeRepositoryModule {
     fun rideRepository(rideRepositoryImpl: RideRepositoryImpl): RideRepository {
         return Mockito.spy(rideRepositoryImpl)
     }
+
+    @Provides
+    fun provideMocks(
+            locationRepository: LocationRepository,
+            placeRepository: PlaceRepository,
+            rideRepository: RideRepository
+    ) = Holder(
+            locationRepository,
+            placeRepository,
+            rideRepository
+    )
+
+    class Holder(
+            val locationRepository: LocationRepository,
+            val placeRepository: PlaceRepository,
+            val rideRepository: RideRepository
+    )
 }

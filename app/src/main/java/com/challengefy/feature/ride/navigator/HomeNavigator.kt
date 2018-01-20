@@ -7,14 +7,15 @@ import android.net.Uri
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import com.challengefy.base.di.scope.ActivityScope
+import com.challengefy.base.util.OpenForTests
 import com.challengefy.data.model.Address
 import com.challengefy.feature.address.activity.AddressSearchActivity
 import com.challengefy.feature.ride.activity.HomeActivity
 import com.google.android.gms.common.api.ResolvableApiException
 import javax.inject.Inject
 
-
 @ActivityScope
+@OpenForTests
 class HomeNavigator @Inject constructor(
         private val activity: HomeActivity
 ) {

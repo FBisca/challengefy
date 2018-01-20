@@ -36,6 +36,11 @@ android {
     dataBinding {
         enabled = true
     }
+
+    sourceSets {
+        androidTest.java.srcDirs += "src/testCommons/java"
+        test.java.srcDirs += "src/testCommons/java"
+    }
 }
 
 androidExtensions {
@@ -96,6 +101,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
 
     kaptAndroidTest "com.google.dagger:dagger-android-processor:$dagger_version"

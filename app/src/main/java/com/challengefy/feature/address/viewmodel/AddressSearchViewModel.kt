@@ -7,6 +7,7 @@ import com.challengefy.data.model.Address
 import com.challengefy.data.model.PredictionAddress
 import com.challengefy.data.repository.PlaceRepository
 import io.reactivex.Single
+import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
