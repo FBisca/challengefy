@@ -3,11 +3,13 @@ package com.challengefy.feature.ride.viewmodel
 import android.databinding.Observable
 import android.databinding.ObservableField
 import com.challengefy.base.di.scope.ActivityScope
+import com.challengefy.base.util.OpenForTests
 import com.challengefy.data.model.Address
 import com.challengefy.data.model.Estimate
 import javax.inject.Inject
 
 @ActivityScope
+@OpenForTests
 class HomeViewModel @Inject constructor() {
 
     val viewState: ObservableField<ViewState> = ObservableField(ViewState.PICKUP)

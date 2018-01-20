@@ -105,7 +105,7 @@ class PickupViewModel @Inject constructor(
     private fun locationEnabled() {
         placeRepository.getCurrentPlace()
                 .doOnSubscribe { loading() }
-                .delay(500, TimeUnit.MILLISECONDS)
+                .delay(500, TimeUnit.MILLISECONDS, schedulerManager.timeScheduler())
                 .observeOn(schedulerManager.mainThread())
                 .subscribe(
                         {
@@ -115,7 +115,7 @@ class PickupViewModel @Inject constructor(
                             if (it is ResolvableApiException) {
                                 homeNavigator.startResolution(it)
                             } else {
-
+                                locationDisabled()
                             }
                         }
                 )
