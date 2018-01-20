@@ -14,7 +14,7 @@ import com.challengefy.R
 import com.challengefy.feature.TestApp
 import com.challengefy.feature.address.adapter.AddressSearchAdapter
 import com.challengefy.feature.test.InjectionTestRule
-import com.challengefy.feature.test.KotlinArgumentMatchers.any
+import com.challengefy.test.KotlinArgumentMatchers.any
 import com.challengefy.feature.test.RecyclerViewMatchers
 import com.challengefy.test.Fabricator
 import io.reactivex.Single

@@ -11,7 +11,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Estimate(
         @SerializedName("vehicle_type") val vehicle: Vehicle,
-        @SerializedName("price_formatted") val price: String
+        @SerializedName("price_formatted") val price: String,
+        @SerializedName("eta") val eta: ETA
 ) : Parcelable
 
 @SuppressLint("ParcelCreator")
@@ -28,8 +29,7 @@ data class Vehicle(
         @SerializedName("icons") val icons: Icons,
         @SerializedName("short_name") val shortName: String,
         @SerializedName("description") val description: String?,
-        @SerializedName("service_type") val serviceType: String?,
-        @SerializedName("eta") val eta: ETA?
+        @SerializedName("service_type") val serviceType: String?
 ) : Parcelable
 
 @SuppressLint("ParcelCreator")

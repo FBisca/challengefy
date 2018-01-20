@@ -11,7 +11,7 @@ import android.support.test.runner.AndroidJUnit4
 import com.challengefy.R
 import com.challengefy.feature.TestApp
 import com.challengefy.feature.test.InjectionTestRule
-import com.challengefy.feature.test.KotlinArgumentMatchers.any
+import com.challengefy.test.KotlinArgumentMatchers.any
 import com.challengefy.test.Fabricator
 import io.reactivex.Single
 import org.junit.Rule

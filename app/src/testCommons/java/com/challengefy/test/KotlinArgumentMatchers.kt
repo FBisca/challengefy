@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package com.challengefy.feature.test
+package com.challengefy.test
 
 import org.mockito.Mockito
 
