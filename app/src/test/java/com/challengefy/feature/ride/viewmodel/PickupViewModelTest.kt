@@ -6,9 +6,11 @@ import com.challengefy.data.repository.LocationRepository
 import com.challengefy.data.repository.LocationRepository.LocationState.*
 import com.challengefy.data.repository.PlaceRepository
 import com.challengefy.feature.ride.navigator.HomeNavigator
+import com.challengefy.test.KotlinArgumentMatchers.any
 import com.challengefy.feature.ride.viewmodel.PickupViewModel.ViewState.LOCATION_DISABLED
 import com.challengefy.test.Fabricator
 import com.challengefy.test.TestSchedulerManager
+import io.reactivex.Maybe
 import io.reactivex.Single
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
@@ -83,6 +85,7 @@ class PickupViewModelTest {
     fun testLocationActive() {
         val address = Fabricator.address()
         `when`(placeRepository.getCurrentPlace()).thenReturn(Single.just(address))
+        `when`(locationRepository.getUserLocation()).thenReturn(Single.just(address.position))
         `when`(locationRepository.getLocationState()).thenReturn(Single.just(ACTIVE))
 
         viewModel.init()
@@ -90,6 +93,24 @@ class PickupViewModelTest {
         schedulerManager.timeScheduler.advanceTimeBy(500, TimeUnit.MILLISECONDS)
 
         assertThat(viewModel.pickUpAddress.get(), equalTo(address))
+    }
+
+    @Test
+    fun testLocationActiveButCurrentPlaceIsTooFar() {
+        val farAddress = Fabricator.address(position = Fabricator.position(23.0, 46.0))
+        val closeAddress = Fabricator.address()
+
+        `when`(placeRepository.getCurrentPlace()).thenReturn(Single.just(farAddress))
+        `when`(locationRepository.getUserLocation()).thenReturn(Single.just(Fabricator.position()))
+
+        `when`(placeRepository.getAddressByPosition(any())).thenReturn(Maybe.just(closeAddress))
+        `when`(locationRepository.getLocationState()).thenReturn(Single.just(ACTIVE))
+
+        viewModel.init()
+
+        schedulerManager.timeScheduler.advanceTimeBy(500, TimeUnit.MILLISECONDS)
+
+        assertThat(viewModel.pickUpAddress.get(), equalTo(closeAddress))
     }
 
     @Test

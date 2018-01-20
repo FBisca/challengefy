@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
+import java.util.*
 
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(value = [Places::class])
@@ -124,7 +125,7 @@ class GooglePlaceSourceTest {
         }
 
         inline fun test(block: GooglePlaceSource.() -> Unit) {
-            block(GooglePlaceSource(context))
+            block(GooglePlaceSource(context, Locale.UK))
         }
 
     }
@@ -166,7 +167,7 @@ class GooglePlaceSourceTest {
         }
 
         inline fun test(block: GooglePlaceSource.() -> Unit) {
-            block(GooglePlaceSource(context))
+            block(GooglePlaceSource(context, Locale.UK))
         }
 
     }

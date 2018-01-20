@@ -37,6 +37,7 @@
           app:srcCompat="@drawable/ic_flag_black_24dp"/>
 
       <TextView
+          android:id="@+id/destination_txt_address"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_margin="8dp"
