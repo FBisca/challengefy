@@ -5,8 +5,6 @@ import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockWebServer
 import android.os.StrictMode
 
-
-
 class FakeNetworkModule(
         private val mockWebServer: MockWebServer
 ) : NetworkModule() {

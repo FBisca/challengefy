@@ -32,8 +32,6 @@ interface TestApplicationComponent : ApplicationComponent {
         @BindsInstance
         fun context(context: Context): TestApplicationComponent.Builder
 
-        fun networkModule(networkModule: NetworkModule): TestApplicationComponent.Builder
-
         fun build(): TestApplicationComponent
     }
 }

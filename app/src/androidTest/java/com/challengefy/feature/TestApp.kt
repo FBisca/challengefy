@@ -16,27 +16,17 @@ class TestApp : App() {
         val DEFAULT_INJECTION_LISTENER: (Activity) -> Unit = {}
     }
 
-    val mockWebServer = MockWebServer()
-
     @Inject
     lateinit var dataSourceHolder: FakeDataSourceModule.Holder
 
     @Inject
     lateinit var repositoryHolder: FakeRepositoryModule.Holder
 
-    var injectionListener: (Activity) -> Unit = DEFAULT_INJECTION_LISTENER
-
     override fun initializeDagger() {
         DaggerTestApplicationComponent
                 .builder()
                 .context(this)
-                .networkModule(FakeNetworkModule(mockWebServer))
                 .build()
                 .injectMembers(this)
-    }
-
-    override fun activityInjector() = AndroidInjector<Activity> {
-        activityInjector.maybeInject(it)
-        injectionListener(it)
     }
 }

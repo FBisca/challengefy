@@ -9,11 +9,11 @@ import android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtP
 import android.support.test.espresso.intent.Intents
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.challengefy.R
 import com.challengefy.feature.TestApp
 import com.challengefy.feature.address.adapter.AddressSearchAdapter
-import com.challengefy.feature.test.InjectionTestRule
 import com.challengefy.test.KotlinArgumentMatchers.any
 import com.challengefy.feature.test.RecyclerViewMatchers
 import com.challengefy.test.Fabricator
@@ -28,9 +28,7 @@ import org.mockito.Mockito.`when`
 class AddressSearchActivityTest {
     @Rule
     @JvmField
-    val rule = InjectionTestRule(AddressSearchActivity::class.java) {
-
-    }
+    val rule = ActivityTestRule(AddressSearchActivity::class.java, false, false)
 
     val app by lazy { InstrumentationRegistry.getTargetContext().applicationContext as TestApp }
 
