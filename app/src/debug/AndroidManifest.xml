@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.challengefy">
+  <application>
+
+    <activity
+        android:name="com.challengefy.base.activity.FragmentTestActivity"
+        android:screenOrientation="portrait"/>
+
+  </application>
+</manifest>

@@ -48,7 +48,8 @@ class AddressSearchViewModel @Inject constructor(
     }
 
     fun inputObservable(): Observable<List<PredictionAddress>> {
-        return inputSubject.debounce(300L, TimeUnit.MILLISECONDS, schedulerManager.timeScheduler())
+        return inputSubject
+                .debounce(300L, TimeUnit.MILLISECONDS, schedulerManager.timeScheduler())
                 .throttleLast(300L, TimeUnit.MILLISECONDS, schedulerManager.timeScheduler())
                 .mergeWith { keyTappedSubject }
                 .observeOn(schedulerManager.mainThread())
@@ -57,6 +58,7 @@ class AddressSearchViewModel @Inject constructor(
                 .flatMap {
                     placeRepository.autoComplete(it, null, null)
                             .toObservable()
+                            .onErrorReturn { emptyList() }
                 }
                 .observeOn(schedulerManager.mainThread())
     }

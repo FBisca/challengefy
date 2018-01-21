@@ -4,10 +4,7 @@ import android.app.Activity
 import com.challengefy.App
 import com.challengefy.feature.base.di.component.DaggerTestApplicationComponent
 import com.challengefy.feature.base.di.module.FakeDataSourceModule
-import com.challengefy.feature.base.di.module.FakeNetworkModule
 import com.challengefy.feature.base.di.module.FakeRepositoryModule
-import dagger.android.AndroidInjector
-import okhttp3.mockwebserver.MockWebServer
 import javax.inject.Inject
 
 class TestApp : App() {

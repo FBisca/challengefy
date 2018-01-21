@@ -125,6 +125,20 @@ class PickupFragment : Fragment() {
         }
     }
 
+    private fun showLocationError() {
+        binding.apply {
+            TransitionManager.beginDelayedTransition(root as ViewGroup)
+
+            pickupCard.visibility = View.VISIBLE
+            pickupCard.layoutParams.width = LayoutParams.MATCH_PARENT
+
+            estimateBtnConfirm.visibility = View.VISIBLE
+            pickupLoading.visibility = View.GONE
+            pickupAddress.visibility = View.VISIBLE
+            pickupCardLocationPermission.visibility = View.GONE
+        }
+    }
+
     private fun bindPaddingChange() {
         paddingDisposable = binding.pickupCard.boundsChangeEvents()
                 .map { rect -> Rect(0, 0, 0, binding.root.height - rect.top) }
@@ -135,11 +149,13 @@ class PickupFragment : Fragment() {
     }
 
     inner class ViewStateChangeListener : Observable.OnPropertyChangedCallback() {
+
         override fun onPropertyChanged(sender: Observable, propertyId: Int) {
             val viewState = viewModel.viewState.get()
             when (viewState) {
                 PickupViewModel.ViewState.LOCATION_NO_PERMISSION -> showNoPermission()
                 PickupViewModel.ViewState.LOCATION_DISABLED -> showLocationDisabled()
+                PickupViewModel.ViewState.LOCATION_ERROR -> showLocationError()
                 PickupViewModel.ViewState.LOADING -> showLoading()
                 PickupViewModel.ViewState.LOCATION_RECEIVED -> showLocationReceived()
                 else -> Unit // Do nothing

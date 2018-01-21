@@ -14,6 +14,7 @@ import android.support.test.runner.AndroidJUnit4
 import com.challengefy.R
 import com.challengefy.feature.TestApp
 import com.challengefy.feature.address.adapter.AddressSearchAdapter
+import com.challengefy.feature.base.scheduler.TestSchedulerManager
 import com.challengefy.test.KotlinArgumentMatchers.any
 import com.challengefy.feature.test.RecyclerViewMatchers
 import com.challengefy.test.Fabricator
@@ -23,6 +24,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
+import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
 class AddressSearchActivityTest {
@@ -93,6 +95,7 @@ class AddressSearchActivityTest {
     }
 
     private fun waitForDebounce() {
-        Thread.sleep(600)
+        TestSchedulerManager.testScheduler.advanceTimeBy(300, TimeUnit.MILLISECONDS)
+        TestSchedulerManager.testScheduler.advanceTimeBy(300, TimeUnit.MILLISECONDS)
     }
 }

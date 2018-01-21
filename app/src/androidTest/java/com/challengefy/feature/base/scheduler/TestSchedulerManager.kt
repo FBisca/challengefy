@@ -4,9 +4,15 @@ import com.challengefy.base.scheduler.SchedulerManager
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.schedulers.TestScheduler
 import javax.inject.Inject
 
 class TestSchedulerManager @Inject constructor() : SchedulerManager {
+
+    companion object {
+        val testScheduler = TestScheduler()
+    }
+
     override fun mainThread(): Scheduler {
         return AndroidSchedulers.mainThread()
     }
@@ -16,6 +22,6 @@ class TestSchedulerManager @Inject constructor() : SchedulerManager {
     }
 
     override fun timeScheduler(): Scheduler {
-        return Schedulers.trampoline()
+        return testScheduler
     }
 }

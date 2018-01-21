@@ -122,11 +122,15 @@ class PickupViewModel @Inject constructor(
                             if (it is ResolvableApiException) {
                                 homeNavigator.startResolution(it)
                             } else {
-                                locationDisabled()
+                                locationError()
                             }
                         }
                 )
                 .apply { disposables.add(this) }
+    }
+
+    private fun locationError() {
+        viewState.set(ViewState.LOCATION_ERROR)
     }
 
     private fun checkPlaceCloseEnough(address: Address): Single<Address> {
@@ -171,7 +175,7 @@ class PickupViewModel @Inject constructor(
     }
 
     enum class ViewState {
-        IDLE, LOADING, LOCATION_DISABLED, LOCATION_NO_PERMISSION, LOCATION_RECEIVED
+        IDLE, LOADING, LOCATION_DISABLED, LOCATION_NO_PERMISSION, LOCATION_RECEIVED, LOCATION_ERROR
     }
 
 }
