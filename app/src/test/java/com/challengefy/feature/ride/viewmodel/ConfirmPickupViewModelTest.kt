@@ -1,8 +1,6 @@
 package com.challengefy.feature.ride.viewmodel
 
 import com.challengefy.feature.ride.navigator.HomeNavigator
-import com.challengefy.feature.ride.viewmodel.ConfirmPickupViewModel
-import com.challengefy.feature.ride.viewmodel.HomeViewModel
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

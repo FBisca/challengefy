@@ -3,7 +3,6 @@ package com.challengefy.feature.ride.fragment
 import android.databinding.ObservableField
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.runner.AndroidJUnit4
 import com.challengefy.R
@@ -14,8 +13,7 @@ import com.challengefy.feature.ride.viewmodel.DestinationViewModel
 import com.challengefy.feature.ride.viewmodel.HomeViewModel
 import com.challengefy.feature.test.FragmentTestRule
 import com.challengefy.test.Fabricator
-import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.*
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
