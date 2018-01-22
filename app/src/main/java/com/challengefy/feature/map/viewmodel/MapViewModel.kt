@@ -73,10 +73,24 @@ class MapViewModel @Inject constructor(
         override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
             val state = homeViewState.get()
             val newState = when {
-                state == HomeViewModel.ViewState.PICKUP && pickUpAddress.get() != null -> ViewState.SHOW_PICKUP
-                state == HomeViewModel.ViewState.DESTINATION && destinationAddress.get() != null -> ViewState.SHOW_DESTINATION
-                state == HomeViewModel.ViewState.CONFIRM_PICKUP -> ViewState.SHOW_PICKUP
-                state == HomeViewModel.ViewState.ESTIMATE -> ViewState.SHOW_DESTINATION
+                state == HomeViewModel.ViewState.PICKUP && pickUpAddress.get() != null ->
+                    ViewState.SHOW_PICKUP
+
+                state == HomeViewModel.ViewState.DESTINATION
+                        && pickUpAddress.get() != null
+                        && destinationAddress.get() == null ->
+                    ViewState.SHOW_PICKUP
+
+                state == HomeViewModel.ViewState.DESTINATION
+                        && destinationAddress.get() != null ->
+                    ViewState.SHOW_DESTINATION
+
+                state == HomeViewModel.ViewState.CONFIRM_PICKUP ->
+                    ViewState.SHOW_PICKUP
+
+                state == HomeViewModel.ViewState.ESTIMATE ->
+                    ViewState.SHOW_DESTINATION
+
                 else -> viewState.get()
             }
 
