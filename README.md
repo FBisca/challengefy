@@ -24,7 +24,7 @@ All the communication between Activity <-> Fragments are done via DI using scope
 
 ##### Place Awareness
 I used the APIs from Google Play Services, like the **Current Place Discovery** and **Predictions**.
-For location updates I used the new implementation for the `FusedLocationProviderClient`.
+For location updates I used the new `FusedLocationProviderClient` implementation.
 <br><br>
 I created a simple logic for the place discovery, if the Google Places returns an address more than 30 meters away from the current user position, I fetch the local Geocoder for closer current address.
 
@@ -38,7 +38,6 @@ Yeah I used mostly **Fragments** to do the View layer, but please don't be scare
 
 ##### Future Improvements
 - Update Gradle to 3.1.0-alphaX to use `MutableLiveData` instead of `ObservableField` for DataBinding
-
 
 ##### Other stuff
 I won't discuss everything in this file, but if you have any question or want to kill me for anything that I did, please contact me I'll be glad to discuss it with you.
