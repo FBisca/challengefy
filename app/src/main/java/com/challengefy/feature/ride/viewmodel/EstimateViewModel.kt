@@ -42,7 +42,7 @@ class EstimateViewModel @Inject constructor(
         }
 
         estimates.addOnPropertyChangedCallback(estimatesChangeListener)
-        estimatesChangeListener.onPropertyChanged(estimates, 0)
+        triggerEstimateChange()
     }
 
     fun dispose() {
@@ -69,6 +69,10 @@ class EstimateViewModel @Inject constructor(
 
     fun onTryAgainClick() {
         requestEstimates()
+    }
+
+    private fun triggerEstimateChange() {
+        estimatesChangeListener.onPropertyChanged(estimates, 0)
     }
 
     private fun requestEstimates() {
