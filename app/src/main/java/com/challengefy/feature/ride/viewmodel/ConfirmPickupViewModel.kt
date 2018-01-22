@@ -26,6 +26,10 @@ class ConfirmPickupViewModel @Inject constructor(
         homeNavigator.detachDestinationListener(this)
     }
 
+    fun onEstimateClick() {
+        homeViewModel.onBack()
+    }
+
     fun onConfirmClick() {
         homeViewModel.pickUpConfirmed()
     }
